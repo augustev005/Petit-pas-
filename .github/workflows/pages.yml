@@ -1,37 +1,137 @@
-name: Deploy Petit Pas to GitHub Pages
+name: Deploy Petit Pas HTML Demo to GitHub Pages
 
 on:
   push:
     branches: ["main", "master"]
+    paths:
+      - "index.html"
+      - ".nojekyll"
+      - "public/**"
+      - ".github/workflows/pages.yml"
+  pull_request:
+    branches: ["main", "master"]
+    paths:
+      - "index.html"
+      - ".nojekyll"
+      - "public/**"
+      - ".github/workflows/pages.yml"
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  group: ${{ github.event_name == 'pull_request' && format('pages-pr-{0}', github.event.pull_request.number) || 'pages' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  deploy-pages:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build:
+    name: Build & Validate HTML Demo
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
+      - name: Stage static HTML demo site
+        run: |
+          rm -rf _site
+          mkdir -p _site/public/assets
+          cp index.html _site/index.html
+          cp -R public/assets/aistudio _site/public/assets/aistudio
+          rm -f _site/public/assets/aistudio/*.md
+          touch _site/.nojekyll
 
-      - name: Upload Web Showcase & Interactive Prototype Artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Validate HTML demo and asset links
+        run: |
+          python3 - <<'EOF'
+          import glob
+          import os
+          import re
+          import sys
+
+          site_dir = "_site"
+          index_path = os.path.join(site_dir, "index.html")
+          if not os.path.isfile(index_path) or os.path.getsize(index_path) == 0:
+              sys.exit("ERROR: _site/index.html is missing or empty")
+
+          # Ensure Android source / config files are never published
+          forbidden = ["app", "build.gradle.kts", "settings.gradle.kts", ".env", ".env.example"]
+          leaked = [p for p in forbidden if os.path.exists(os.path.join(site_dir, p))]
+          if leaked:
+              sys.exit(f"ERROR: Forbidden non-web files found in _site: {leaked}")
+
+          html_files = [index_path] + sorted(glob.glob(os.path.join(site_dir, "public/assets/aistudio/*.html")))
+          missing = []
+          checked = 0
+          for html in html_files:
+              base = os.path.dirname(html)
+              with open(html, encoding="utf-8", errors="ignore") as f:
+                  text = f.read()
+              refs = set(re.findall(r"""(?:src|href)=["']([^"'#>]+)["']""", text))
+              refs |= set(re.findall(r"""loadHtmlScreen\(\s*["']([^"']+)["']""", text))
+              for ref in sorted(refs):
+                  if ref == "interactive" or ref.startswith(("http://", "https://", "antigravity://", "data:", "tel:", "mailto:", "javascript:")):
+                      continue
+                  clean_ref = ref.split("?")[0].split("#")[0]
+                  target = os.path.normpath(os.path.join(base, clean_ref))
+                  checked += 1
+                  if not os.path.isfile(target):
+                      missing.append((html, ref, target))
+
+          if missing:
+              for html, ref, target in missing:
+                  print(f"MISSING: {ref} referenced in {html} (expected {target})", file=sys.stderr)
+              sys.exit(f"ERROR: {len(missing)} broken local asset reference(s) found")
+
+          total_files = sum(len(files) for _, _, files in os.walk(site_dir))
+          total_bytes = sum(
+              os.path.getsize(os.path.join(root, fname))
+              for root, _, files in os.walk(site_dir)
+              for fname in files
+          )
+          print(f"Validated {len(html_files)} HTML files and {checked} local references (0 broken).")
+          print(f"Staged {total_files} files ({total_bytes / 1024:.1f} KiB) in _site/.")
+
+          summary_path = os.environ.get("GITHUB_STEP_SUMMARY")
+          if summary_path:
+              with open(summary_path, "a", encoding="utf-8") as s:
+                  s.write("### Petit Pas HTML Demo Validation\n\n")
+                  s.write(f"- **HTML files validated**: {len(html_files)}\n")
+                  s.write(f"- **Local asset & screen references checked**: {checked} (0 broken)\n")
+                  s.write(f"- **Total staged files**: {total_files} ({total_bytes / 1024:.1f} KiB)\n")
+          EOF
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v5
         with:
-          path: '.'
+          path: _site
+          include-hidden-files: true
+
+  deploy:
+    name: Deploy HTML Demo to GitHub Pages
+    needs: build
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Setup Pages
+        uses: actions/configure-pages@v6
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
+
+      - name: Publish deployment summary
+        if: steps.deployment.outputs.page_url != ''
+        run: |
+          {
+            echo "### GitHub Pages Deployment"
+            echo ""
+            echo "- **Live Demo URL**: ${{ steps.deployment.outputs.page_url }}"
+          } >> "$GITHUB_STEP_SUMMARY"
