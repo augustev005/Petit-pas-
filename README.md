@@ -8,12 +8,12 @@
 
 ---
 
-## 🌐 Liens Directs (Démo Web, Antigravity & Application)
+## 🌐 Liens Directs (Prototype Web, Antigravity & Application)
 
-- **🚀 Ouvrir directement dans Antigravity IDE (1 clic)** : `antigravity://vscode.git/clone?url=https%3A%2F%2Fgithub.com%2Ftrinova%2Fpetit-pas.git`
-- **Démo Web Interactive (GitHub Pages)** : [**https://trinova.github.io/petit-pas/**](https://trinova.github.io/petit-pas/)
+- **🌐 Prototype Web Interactif (GitHub Pages)** : [**https://augustev005.github.io/Petit-pas-/**](https://augustev005.github.io/Petit-pas-/)
+- **🚀 Ouvrir directement dans Antigravity IDE (1 clic)** : `antigravity://vscode.git/clone?url=https%3A%2F%2Fgithub.com%2Faugustev005%2FPetit-pas-.git`
 - **Émulateur Android en direct (Google AI Studio)** : [**Ouvrir Petit Pas dans AI Studio**](https://ais-pre-wqa3p3mdo7kg733kcrf4tr-579195026251.europe-west2.run.app)
-- **Code Source GitHub** : [**https://github.com/trinova/petit-pas**](https://github.com/trinova/petit-pas)
+- **Code Source GitHub** : [**https://github.com/augustev005/Petit-pas-**](https://github.com/augustev005/Petit-pas-)
 
 ---
 

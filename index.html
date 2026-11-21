@@ -59,109 +59,42 @@
       display: flex;
       flex-direction: column;
     }
-    /* Top Showcase Bar for Desktop / GitHub Pages */
-    .gh-topbar {
-      background: #00352F;
-      color: #FFFFFF;
-      padding: 10px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-      font-size: 13px;
-    }
-    .gh-topbar-brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 700;
-    }
-    .gh-badge {
-      background: rgba(177, 239, 227, 0.2);
-      color: #B1EFE3;
-      padding: 3px 10px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 700;
-    }
-    .gh-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .gh-btn {
-      text-decoration: none;
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 12px;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      transition: opacity 0.15s;
-      cursor: pointer;
-      border: none;
-    }
-    .gh-btn:hover { opacity: 0.9; }
-    .gh-btn-primary { background: #FC6018; color: #FFFFFF; }
-    .gh-btn-outline { background: rgba(255,255,255,0.12); color: #FFFFFF; }
-
-    /* Screen Switcher Strip */
-    .screen-switcher-bar {
-      background: var(--surface-card);
-      border-bottom: 1px solid var(--border);
-      padding: 10px 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      overflow-x: auto;
-    }
-    .screen-pill {
-      padding: 6px 13px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
-      border: 1px solid var(--border);
-      background: var(--surface-low);
-      color: var(--text-main);
-      cursor: pointer;
-      white-space: nowrap;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-    }
-    .screen-pill.active {
-      background: #00443D;
-      color: #FFFFFF;
-      border-color: #00443D;
-    }
 
     /* Main Workspace Layout */
     .workspace {
       flex: 1;
       display: flex;
       justify-content: center;
-      align-items: flex-start;
-      padding: 20px 12px 40px;
+      align-items: stretch;
+      padding: 0;
     }
     .phone-frame {
       width: 100%;
-      max-width: 440px;
+      max-width: 480px;
       background: var(--surface);
-      border-radius: 28px;
-      box-shadow: 0 20px 50px rgba(0, 68, 61, 0.14), 0 0 0 8px var(--surface-card);
-      overflow: hidden;
       display: flex;
       flex-direction: column;
-      min-height: 820px;
+      min-height: 100dvh;
       position: relative;
+      margin: 0 auto;
+    }
+    @media (min-width: 600px) {
+      .workspace {
+        padding: 20px 12px;
+        align-items: flex-start;
+      }
+      .phone-frame {
+        border-radius: 28px;
+        box-shadow: 0 20px 50px rgba(0, 68, 61, 0.14), 0 0 0 8px var(--surface-card);
+        overflow: hidden;
+        min-height: 860px;
+      }
     }
     /* Native HTML Screen Iframe View */
     .iframe-container {
       width: 100%;
-      height: 820px;
+      flex: 1;
+      min-height: calc(100dvh - 62px);
       border: none;
       display: none;
     }
@@ -370,7 +303,7 @@
       color: var(--primary);
     }
     .bottom-nav {
-      position: absolute;
+      position: sticky;
       bottom: 0;
       left: 0;
       right: 0;
@@ -379,7 +312,7 @@
       display: flex;
       justify-content: space-around;
       padding: 8px 4px 10px;
-      z-index: 30;
+      z-index: 40;
     }
     .nav-item {
       border: none;
@@ -401,8 +334,9 @@
     }
     .toast {
       position: fixed;
-      bottom: 24px;
-      right: 24px;
+      bottom: 76px;
+      left: 50%;
+      transform: translateX(-50%);
       background: #00443D;
       color: #FFFFFF;
       padding: 12px 18px;
@@ -412,51 +346,18 @@
       box-shadow: 0 10px 25px rgba(0,0,0,0.25);
       display: none;
       z-index: 100;
+      max-width: 90vw;
+      text-align: center;
     }
   </style>
 </head>
 <body>
 
-  <!-- Top GitHub Pages Bar -->
-  <header class="gh-topbar">
-    <div class="gh-topbar-brand">
-      <span>🇹🇬 PETIT PAS • Passeport Santé Maternelle & Infantile</span>
-      <span class="gh-badge">100% Hors-ligne • Éwé / Kabyè / FR</span>
-    </div>
-    <div class="gh-actions">
-      <button class="gh-btn gh-btn-outline" onclick="speakText('Bienvenue sur Petit Pas. Chaque petit pas compte. Votre carnet de santé maternelle et infantile fonctionne cent pour cent hors connexion.')">
-        🔊 Tester la Voix
-      </button>
-      <a class="gh-btn gh-btn-outline" href="antigravity://vscode.git/clone?url=https%3A%2F%2Fgithub.com%2Ftrinova%2Fpetit-pas.git">
-        🚀 Ouvrir dans Antigravity
-      </a>
-      <a class="gh-btn gh-btn-outline" href="https://ais-pre-wqa3p3mdo7kg733kcrf4tr-579195026251.europe-west2.run.app" target="_blank" rel="noopener">
-        📱 Ouvrir dans AI Studio
-      </a>
-      <a class="gh-btn gh-btn-primary" href="https://github.com/trinova/petit-pas" target="_blank" rel="noopener">
-        ⭐ Code & APK GitHub
-      </a>
-    </div>
-  </header>
-
-  <!-- 10 Mockup Screens Direct Switcher -->
-  <nav class="screen-switcher-bar" aria-label="Sélecteur des 10 écrans Petit Pas">
-    <button class="screen-pill active" onclick="loadHtmlScreen('interactive', this)">✨ App Interactive</button>
-    <button class="screen-pill" onclick="loadHtmlScreen('public/assets/aistudio/code__4__5e110feb.html', this)">1. Accueil & Enregistrement</button>
-    <button class="screen-pill" onclick="loadHtmlScreen('public/assets/aistudio/code__13__e9c1e6f0.html', this)">2. Suivi Santé (Carnet Amel K.)</button>
-    <button class="screen-pill" onclick="loadHtmlScreen('public/assets/aistudio/code__11__692c0f67.html', this)">3. Mon Espace (Patricia K.)</button>
-    <button class="screen-pill" onclick="loadHtmlScreen('public/assets/aistudio/code__6__79af7070.html', this)">4. Urgence SAMU 118</button>
-    <button class="screen-pill" onclick="loadHtmlScreen('public/assets/aistudio/code__2__76f63ec3.html', this)">5. Confirmation Audio Éwé</button>
-    <button class="screen-pill" onclick="loadHtmlScreen('public/assets/aistudio/code_6e70f2e4.html', this)">6. Fiche CMS & QR Bluetooth</button>
-    <button class="screen-pill" onclick="loadHtmlScreen('public/assets/aistudio/code__9__7e6e9f04.html', this)">7. Mémo Dr. Akouavi Mensah</button>
-    <button class="screen-pill" onclick="loadHtmlScreen('public/assets/aistudio/code__17__d6ac0a83.html', this)">8. Passeport Officiel A4</button>
-  </nav>
-
-  <!-- Centered Mobile Viewport -->
+  <!-- Centered Mobile Viewport (Clean Prototype Interface) -->
   <main class="workspace">
     <div class="phone-frame">
 
-      <!-- Embedded Iframe for inspecting any of the 10 raw HTML screens -->
+      <!-- Embedded Iframe for inspecting sub-screens & tabs -->
       <iframe id="rawScreenIframe" class="iframe-container" title="Écran Petit Pas"></iframe>
 
       <!-- Interactive App Mode -->
@@ -476,7 +377,7 @@
             <button class="icon-btn orange" onclick="speakText('Bienvenue sur Petit Pas. Chaque petit pas compte. Le carnet de santé d\'Amel est à jour et sauvegardé sur votre téléphone.')" title="Assistance vocale">
               <span class="material-symbols-outlined">record_voice_over</span>
             </button>
-            <img src="public/assets/aistudio/avatar_patricia.png" alt="Profil Patricia K." class="logo-avatar" style="cursor:pointer;" onclick="loadHtmlScreen('public/assets/aistudio/code__11__692c0f67.html', document.querySelectorAll('.screen-pill')[3])" title="Ouvrir le profil de Patricia K." />
+            <img src="public/assets/aistudio/avatar_patricia.png" alt="Profil Patricia K." class="logo-avatar" style="cursor:pointer;" onclick="loadHtmlScreen('public/assets/aistudio/code__11__692c0f67.html', 4)" title="Ouvrir le profil de Patricia K." />
           </div>
         </div>
 
@@ -557,7 +458,7 @@
                 <small style="font-size:10px; color:#A83900; font-weight:700;">80% reçus</small>
               </div>
             </div>
-            <button class="cta-emerald" onclick="loadHtmlScreen('public/assets/aistudio/code__13__e9c1e6f0.html', document.querySelectorAll('.screen-pill')[2])">
+            <button class="cta-emerald" onclick="loadHtmlScreen('public/assets/aistudio/code__13__e9c1e6f0.html', 1)">
               📖 Ouvrir le Carnet de Santé & Conseils Dr. Akouavi
             </button>
           </div>
@@ -576,7 +477,7 @@
             <p style="font-size:12.5px; line-height:1.45;">
               Appel téléphonique direct GSM sans internet. En cas de convulsion, détresse respiratoire ou fièvre &gt; 38,5°C.
             </p>
-            <button class="cta-white" onclick="loadHtmlScreen('public/assets/aistudio/code__6__79af7070.html', document.querySelectorAll('.screen-pill')[4])">
+            <button class="cta-white" onclick="loadHtmlScreen('public/assets/aistudio/code__6__79af7070.html', 0)">
               📞 Appeler le 118 / Ouvrir Alerte Signes de Danger
             </button>
           </div>
@@ -592,7 +493,7 @@
             <p style="font-size:12.5px; line-height:1.45;">
               Dictez ce qui vous inquiète (toux, pleurs, selle liquide) en Français, Éwé ou Kabyè pour préparer la consultation CMS.
             </p>
-            <button class="cta-white" style="color:#A83900;" onclick="loadHtmlScreen('public/assets/aistudio/code__2__76f63ec3.html', document.querySelectorAll('.screen-pill')[5])">
+            <button class="cta-white" style="color:#A83900;" onclick="loadHtmlScreen('public/assets/aistudio/code__2__76f63ec3.html', 0)">
               🎤 Écouter la Confirmation Vocale Éwé (Nyasia dze edzi nyuie)
             </button>
           </div>
@@ -609,40 +510,40 @@
               </div>
             </div>
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-              <button class="cta-emerald" onclick="loadHtmlScreen('public/assets/aistudio/code__9__7e6e9f04.html', document.querySelectorAll('.screen-pill')[7])">
+              <button class="cta-emerald" onclick="loadHtmlScreen('public/assets/aistudio/code__9__7e6e9f04.html', 2)">
                 🩺 Mémo Dr. Akouavi
               </button>
-              <button class="cta-emerald" style="background:#135D54;" onclick="loadHtmlScreen('public/assets/aistudio/code_6e70f2e4.html', document.querySelectorAll('.screen-pill')[6])">
+              <button class="cta-emerald" style="background:#135D54;" onclick="loadHtmlScreen('public/assets/aistudio/code_6e70f2e4.html', 3)">
                 📡 Partage QR & PDF
               </button>
             </div>
           </div>
         </div>
-
-        <!-- Bottom Navigation Bar -->
-        <nav class="bottom-nav">
-          <button class="nav-item active" onclick="loadHtmlScreen('interactive', document.querySelectorAll('.screen-pill')[0])">
-            <span class="material-symbols-outlined">home</span>
-            <span>Accueil</span>
-          </button>
-          <button class="nav-item" onclick="loadHtmlScreen('public/assets/aistudio/code__13__e9c1e6f0.html', document.querySelectorAll('.screen-pill')[2])">
-            <span class="material-symbols-outlined">medical_services</span>
-            <span>Suivi santé</span>
-          </button>
-          <button class="nav-item" onclick="loadHtmlScreen('public/assets/aistudio/code__9__7e6e9f04.html', document.querySelectorAll('.screen-pill')[7])">
-            <span class="material-symbols-outlined">wb_sunny</span>
-            <span>Éveil</span>
-          </button>
-          <button class="nav-item" onclick="loadHtmlScreen('public/assets/aistudio/code_6e70f2e4.html', document.querySelectorAll('.screen-pill')[6])">
-            <span class="material-symbols-outlined">local_hospital</span>
-            <span>Soignants</span>
-          </button>
-          <button class="nav-item" onclick="loadHtmlScreen('public/assets/aistudio/code__11__692c0f67.html', document.querySelectorAll('.screen-pill')[3])">
-            <span class="material-symbols-outlined">menu_book</span>
-            <span>Mon Espace</span>
-          </button>
-        </nav>
       </div>
+
+      <!-- Persistent Bottom Navigation Bar -->
+      <nav class="bottom-nav">
+        <button class="nav-item active" onclick="loadHtmlScreen('interactive', 0)">
+          <span class="material-symbols-outlined">home</span>
+          <span>Accueil</span>
+        </button>
+        <button class="nav-item" onclick="loadHtmlScreen('public/assets/aistudio/code__13__e9c1e6f0.html', 1)">
+          <span class="material-symbols-outlined">medical_services</span>
+          <span>Suivi santé</span>
+        </button>
+        <button class="nav-item" onclick="loadHtmlScreen('public/assets/aistudio/code__9__7e6e9f04.html', 2)">
+          <span class="material-symbols-outlined">wb_sunny</span>
+          <span>Éveil</span>
+        </button>
+        <button class="nav-item" onclick="loadHtmlScreen('public/assets/aistudio/code_6e70f2e4.html', 3)">
+          <span class="material-symbols-outlined">local_hospital</span>
+          <span>Soignants</span>
+        </button>
+        <button class="nav-item" onclick="loadHtmlScreen('public/assets/aistudio/code__11__692c0f67.html', 4)">
+          <span class="material-symbols-outlined">menu_book</span>
+          <span>Mon Espace</span>
+        </button>
+      </nav>
 
     </div>
   </main>
@@ -674,10 +575,11 @@
       speakText(sampleText);
     }
 
-    function loadHtmlScreen(path, btn) {
-      if (btn) {
-        document.querySelectorAll('.screen-pill').forEach(p => p.classList.remove('active'));
-        btn.classList.add('active');
+    function loadHtmlScreen(path, navIndex) {
+      const navItems = document.querySelectorAll('.bottom-nav .nav-item');
+      if (typeof navIndex === 'number' && navItems[navIndex]) {
+        navItems.forEach(n => n.classList.remove('active'));
+        navItems[navIndex].classList.add('active');
       }
       const iframe = document.getElementById('rawScreenIframe');
       const interactive = document.getElementById('interactiveAppContainer');
@@ -688,6 +590,20 @@
         interactive.style.display = 'none';
         iframe.src = path;
         iframe.classList.add('active');
+        iframe.onload = function() {
+          try {
+            const win = iframe.contentWindow;
+            const doc = iframe.contentDocument || win.document;
+            if (win && win.history) {
+              win.history.back = function() {
+                loadHtmlScreen('interactive', 0);
+              };
+            }
+            // Hide duplicate bottom nav inside sub-screen iframe if present so only persistent bottom-nav shows
+            const innerNavs = doc.querySelectorAll('nav.fixed.bottom-0');
+            innerNavs.forEach(n => { n.style.display = 'none'; });
+          } catch (e) {}
+        };
       }
     }
   </script>
