@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+
+<html lang="fr"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-primary-container": "#91d3c8", "on-background": "#181c20", "surface-container": "#ebeef3", "primary-container": "#135d54", "surface-variant": "#e0e3e8", "secondary-fixed-dim": "#ffb59a", "surface": "#f7f9ff", "secondary": "#a83900", "secondary-container": "#fc6018", "surface-bright": "#f7f9ff", "surface-container-low": "#f1f4f9", "outline": "#6f7977", "surface-dim": "#d7dadf", "secondary-fixed": "#ffdbcf", "on-tertiary-container": "#ffb4ad", "on-secondary-container": "#531800", "surface-container-highest": "#e0e3e8", "on-tertiary-fixed": "#410003", "inverse-on-surface": "#eef1f6", "primary": "#00443d", "background": "#f7f9ff", "on-error": "#ffffff", "on-error-container": "#93000a", "error": "#ba1a1a", "on-tertiary": "#ffffff", "tertiary": "#7f000b", "tertiary-container": "#a80c16", "tertiary-fixed-dim": "#ffb4ac", "on-secondary-fixed": "#380d00", "on-primary-fixed-variant": "#005048", "on-tertiary-fixed-variant": "#93000e", "on-surface": "#181c20", "on-surface-variant": "#3f4946", "inverse-primary": "#90d3c7", "inverse-surface": "#2d3135", "on-secondary-fixed-variant": "#802a00", "tertiary-fixed": "#ffdad6", "surface-container-lowest": "#ffffff", "error-container": "#ffdad6", "primary-fixed": "acefe3", "primary-fixed-dim": "#90d3c7", "on-secondary": "#ffffff", "surface-tint": "#23695f", "surface-container-high": "#e5e8ee", "on-primary-fixed": "#00201c", "outline-variant": "#bfc9c5", "on-primary": "#ffffff" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "gutter-sm": "0.75rem", "margin": "1rem", "gutter": "1rem", "space-lg": "1.5rem", "space-xl": "2rem", "space-xs": "0.25rem", "gutter-lg": "1.5rem", "margin-lg": "1.5rem", "space-sm": "0.5rem", "space-md": "1rem", "margin-sm": "0.75rem" }, "fontFamily": { "label-lg": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "label-sm": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "headline-sm": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "headline-xl": ["Plus Jakarta Sans"], "label-md": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"], "body-sm": ["Plus Jakarta Sans"], "headline-lg-mobile": ["Plus Jakarta Sans"], "headline-xl-mobile": ["Plus Jakarta Sans"] }, "fontSize": { "label-lg": ["15px", { "lineHeight": "20px", "fontWeight": "600" }], "body-md": ["15px", { "lineHeight": "22px", "fontWeight": "400" }], "label-sm": ["11px", { "lineHeight": "14px", "fontWeight": "700" }], "headline-md": ["22px", { "lineHeight": "28px", "fontWeight": "600" }], "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }], "headline-lg": ["28px", { "lineHeight": "36px", "fontWeight": "700" }], "headline-xl": ["36px", { "lineHeight": "44px", "fontWeight": "700" }], "label-md": ["13px", { "lineHeight": "16px", "fontWeight": "600" }], "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "500" }], "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }], "headline-lg-mobile": ["24px", { "lineHeight": "30px", "fontWeight": "700" }], "headline-xl-mobile": ["28px", { "lineHeight": "34px", "fontWeight": "700" }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-on-surface flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-margin flex items-center justify-between"><h1 class="font-headline-sm text-headline-sm text-primary tracking-tight">Mon Espace</h1><div class="flex items-center gap-space-sm"><button aria-label="Assistance Vocale" class="w-11 h-11 rounded-full flex items-center justify-center text-secondary hover:bg-secondary-fixed/30 transition-colors"><span class="material-symbols-outlined text-[24px]">record_voice_over</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex flex-col relative w-full pt-16 pb-28 px-margin bg-surface"><div class="flex flex-col w-full space-y-space-md">
+<!-- En-tête fonctionnel & Badge de sécurité offline -->
+<section class="flex flex-col gap-space-xs mt-space-xs">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-sm text-headline-sm text-primary tracking-tight">Mon Espace Famille &amp; Carnet</h2>
+<div class="w-9 h-9 rounded-full bg-surface-container-low flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined text-[20px]">folder_shared</span>
+</div>
+</div>
+<!-- Badge Hors Connexion & Sécurité -->
+<div class="flex items-center gap-space-xs px-3 py-1.5 rounded-full bg-primary-fixed/40 text-on-primary-fixed-variant self-start">
+<span class="material-symbols-outlined text-[16px] text-primary" style="font-variation-settings: 'FILL' 1;">cloud_off</span>
+<span class="font-label-sm text-label-sm tracking-wide">100% Hors connexion • Mémoire chiffrée</span>
+</div>
+</section>
+<!-- Carte d'identité de la famille -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-space-md">
+<!-- Profil Maman -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="relative w-12 h-12 rounded-full overflow-hidden bg-surface-container shrink-0 shadow-inner">
+<img class="w-full h-full object-cover" data-alt="Portrait photography of Patricia, a young smiling West African mother in Togo wearing a vibrant warm ochre headwrap with gentle natural studio daylight. Reassuring, caring and proud expression." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZokY2198JK8jdqBsgvbM1MEQUR-Tp6UaO6elLyKvJIg7CynK_EQTxQl1AJyvJ_jW9-V6lSAJ588_zsA-7LBYyPTcCcJtvZkNdb2cerRNR0kIzso6nCKU_nXt5Pu5RIWtNprKYCsCY5GslY3ZXy07_3zHBhCPZzRDhCz9nlJ75A8PLvqi3-JOxP_qhil2vQRgJmMjupysR1QIFmGNr7ArVWhicLKnrhqWjmS7BsmY"/>
+</div>
+<div class="min-w-0 flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="font-label-lg text-label-lg text-on-surface truncate">Patricia K.</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-low px-1.5 py-0.5 rounded">Mère</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">Tokoin-Solidarité, Lomé</p>
+</div>
+</div>
+<button aria-label="Modifier le profil" class="w-10 h-10 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface-variant flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+</div>
+<!-- Sélecteur d'enfant actif -->
+<div class="bg-surface-container-low rounded-lg p-space-sm flex items-center justify-between">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">child_care</span>
+</div>
+<div class="min-w-0">
+<div class="flex items-center gap-1.5">
+<p class="font-label-lg text-label-lg text-on-surface truncate">Amel K.</p>
+<span class="font-label-sm text-label-sm text-primary bg-on-primary-container/25 px-2 py-0.5 rounded-full">Actif</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">8 mois • Fille</p>
+</div>
+</div>
+<button class="flex items-center gap-1 px-3 py-1.5 rounded-full bg-surface-container-lowest text-on-surface shadow-xs font-label-md text-label-md hover:bg-surface-container-high transition-colors">
+<span>Changer</span>
+<span class="material-symbols-outlined text-[16px]">expand_more</span>
+</button>
+</div>
+</div>
+<!-- Fiche de santé et croissance (Amel) -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<div class="w-7 h-7 rounded-full bg-on-primary-container/30 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">monitor_weight</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Santé &amp; Croissance</h3>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-low px-2 py-1 rounded-full">8 mois</span>
+</div>
+<!-- Grand indicateur de poids et courbe OMS -->
+<div class="bg-surface-container-low rounded-lg p-space-md flex flex-col gap-space-sm">
+<div class="flex justify-between items-baseline">
+<div>
+<span class="font-body-sm text-body-sm text-on-surface-variant block">Poids actuel</span>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-xl-mobile text-headline-xl-mobile text-primary tracking-tight">7,85</span>
+<span class="font-label-lg text-label-lg text-primary">kg</span>
+</div>
+</div>
+<div class="text-right">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-on-primary-container/40 text-primary font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]">trending_up</span>
+            +320g ce mois
+          </span>
+</div>
+</div>
+<!-- Graphique SVG simplifié courbe OMS -->
+<div class="w-full bg-surface-container-lowest rounded-lg p-3">
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Courbe OMS (0 à 8 mois)</span>
+<span class="font-label-sm text-label-sm text-primary">Percentile p50</span>
+</div>
+<svg aria-hidden="true" class="w-full h-12 overflow-visible" viewbox="0 0 280 60">
+<!-- Zone verte saine OMS -->
+<path d="M 0 52 Q 70 42 140 32 T 280 12 L 280 28 Q 210 44 140 48 T 0 58 Z" fill="#91d3c8" fill-opacity="0.25"></path>
+<!-- Courbe de référence -->
+<path d="M 0 54 Q 70 44 140 34 T 280 16" fill="none" opacity="0.4" stroke="#135d54" stroke-dasharray="3,3" stroke-width="1.5"></path>
+<!-- Courbe Amel -->
+<path d="M 0 56 Q 70 46 140 36 T 280 18" fill="none" stroke="#00443d" stroke-linecap="round" stroke-width="2.5"></path>
+<!-- Dernier point de mesure -->
+<circle cx="280" cy="18" fill="#fc6018" r="4.5" stroke="#ffffff" stroke-width="2"></circle>
+</svg>
+</div>
+<!-- Statut rassurant OMS -->
+<div class="flex items-center gap-2 text-primary font-label-md text-label-md">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>Croissance saine conforme courbe OMS</span>
+</div>
+</div>
+<!-- Taille & Périmètre crânien -->
+<div class="grid grid-cols-2 gap-space-sm">
+<div class="bg-surface-container-low rounded-lg p-space-sm flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-surface-container-lowest flex items-center justify-center text-primary shrink-0 shadow-xs">
+<span class="material-symbols-outlined text-[20px]">straighten</span>
+</div>
+<div class="min-w-0">
+<span class="font-body-sm text-body-sm text-on-surface-variant block">Taille</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">68 cm</span>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-lg p-space-sm flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-surface-container-lowest flex items-center justify-center text-secondary shrink-0 shadow-xs">
+<span class="material-symbols-outlined text-[20px]">psychology</span>
+</div>
+<div class="min-w-0">
+<span class="font-body-sm text-body-sm text-on-surface-variant block">Périmètre cr.</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">44 cm</span>
+</div>
+</div>
+</div>
+<!-- Bouton vocal d'écoute de la fiche santé -->
+<button class="w-full flex items-center justify-between p-space-sm rounded-lg bg-secondary-fixed text-on-secondary-fixed hover:bg-secondary-fixed-dim transition-colors shadow-xs" id="voice-summary-btn">
+<div class="flex items-center gap-space-sm min-w-0 text-left">
+<div class="w-11 h-11 rounded-full bg-secondary text-on-secondary flex items-center justify-center shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-[24px]">volume_up</span>
+</div>
+<div class="min-w-0">
+<span class="font-label-lg text-label-lg block truncate">Écouter le résumé de santé</span>
+<span class="font-body-sm text-body-sm text-on-secondary-fixed-variant block">Disponible en Éwé ou Français</span>
+</div>
+</div>
+<div class="px-3 py-1.5 rounded-full bg-on-secondary-fixed/10 font-label-sm text-label-sm font-bold flex items-center gap-1 shrink-0">
+<span class="material-symbols-outlined text-[16px]">play_arrow</span>
+<span>Audio</span>
+</div>
+</button>
+</div>
+<!-- Statut vaccinal PEV Togo -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<div class="w-7 h-7 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[18px]">vaccines</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Vaccination PEV Togo</h3>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-primary-fixed/50 text-on-primary-fixed-variant font-label-sm text-label-sm">
+        4/5 reçus
+      </span>
+</div>
+<!-- Barre de progression PEV -->
+<div class="space-y-1.5">
+<div class="flex justify-between items-center text-on-surface-variant font-label-sm text-label-sm">
+<span>Statut actuel</span>
+<span class="text-primary font-semibold">À jour (80%)</span>
+</div>
+<div class="w-full h-2.5 bg-surface-container-high rounded-full overflow-hidden flex">
+<div class="bg-primary h-full w-[80%] rounded-full transition-all"></div>
+</div>
+</div>
+<!-- Dernier vaccin reçu -->
+<div class="bg-surface-container-low rounded-lg p-space-sm flex items-start gap-space-sm">
+<div class="w-8 h-8 rounded-full bg-on-primary-container/30 text-primary flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">done_all</span>
+</div>
+<div class="min-w-0 flex-1">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface truncate">Dernier vaccin administré</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">14 oct 2024</span>
+</div>
+<p class="font-body-md text-body-md text-primary font-medium mt-0.5">Pentavalent 2 &amp; Polio 2</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">CMS Adidogomé • Dr. Akouavi</p>
+</div>
+</div>
+<!-- Prochain vaccin à venir -->
+<div class="bg-secondary-fixed/40 rounded-lg p-space-sm flex items-start gap-space-sm">
+<div class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[18px]">event</span>
+</div>
+<div class="min-w-0 flex-1">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-secondary-container font-semibold">Prochaine étape vaccinale</span>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary font-label-sm text-label-sm">Dans 26 j</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface font-semibold mt-0.5">Pentavalent 3 &amp; Rougeole</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Prévu vers 9 mois au CMS habituel</p>
+</div>
+</div>
+</div>
+<!-- Dernier mémo soignant enregistré -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<div class="w-7 h-7 rounded-full bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">clinical_notes</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Mémo Soignant</h3>
+</div>
+<span class="font-label-sm text-label-sm text-secondary font-semibold bg-secondary-fixed/50 px-2 py-0.5 rounded-full">Il y a 2h</span>
+</div>
+<div class="bg-surface-container-low rounded-lg p-space-sm space-y-space-sm">
+<div class="flex items-center justify-between">
+<div class="min-w-0">
+<p class="font-label-md text-label-md text-on-surface truncate">Dr. Akouavi (Sage-femme)</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">CMS Adidogomé</p>
+</div>
+<span class="material-symbols-outlined text-primary text-[20px]">verified</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant italic bg-surface-container-lowest p-2.5 rounded-lg">
+        « Bonne prise de poids ce mois-ci. Continuer la diversification avec la bouillie enrichie togolaise (soja, maïs, moringa). Bien hydrater bébé l'après-midi. »
+      </p>
+<!-- Bouton d'écoute audio du mémo en un tap -->
+<button class="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg bg-surface-container-highest hover:bg-surface-dim text-on-surface font-label-md text-label-md transition-colors active:scale-[0.98]" id="memo-audio-btn">
+<span class="material-symbols-outlined text-primary text-[20px]">mic</span>
+<span>Écouter la note vocale du docteur</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">(0:42)</span>
+</button>
+</div>
+</div>
+<!-- Bloc Export & Partage Sécurisé de Proximité -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-space-md">
+<div class="space-y-1">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Export &amp; Consultation CMS</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+        Présentez ce dossier instantanément au soignant lors de votre visite au dispensaire.
+      </p>
+</div>
+<!-- GRAND BOUTON VERT ÉMERAUDE -->
+<button class="w-full min-h-[54px] rounded-lg bg-primary-container text-on-primary hover:opacity-95 active:scale-[0.99] font-label-lg text-label-lg flex items-center justify-center gap-space-sm shadow-md transition-all" id="export-pdf-btn">
+<span class="material-symbols-outlined text-[24px]">picture_as_pdf</span>
+<span>Exporter en PDF pour la consultation CMS</span>
+</button>
+<!-- Garanties de sécurité affichées -->
+<div class="bg-surface-container-low rounded-lg p-space-sm space-y-2">
+<div class="flex items-center gap-2 text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">verified_user</span>
+<span>Garantie Souveraineté &amp; Vie Privée</span>
+</div>
+<ul class="font-body-sm text-body-sm text-on-surface-variant space-y-1.5 pl-1">
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary">smartphone</span>
+<span>Vos données restent à 100% sur votre téléphone</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary">sd_card</span>
+<span>Sauvegarde compatible avec votre carte mémoire SD</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary">wifi_off</span>
+<span>Aucun compte requis, aucun forfait internet consommé</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- Toast Notification Interactive (masqué au départ) -->
+<div class="hidden fixed bottom-24 left-4 right-4 bg-primary text-on-primary p-3 rounded-lg shadow-xl flex items-center gap-3 transition-all z-50" id="action-toast">
+<span class="material-symbols-outlined text-[22px] text-on-primary-container">info</span>
+<span class="font-body-sm text-body-sm font-medium flex-1" id="toast-message">Action en cours...</span>
+</div>
+</div>
+<script>
+  (function() {
+    const toast = document.getElementById('action-toast');
+    const toastMsg = document.getElementById('toast-message');
+    let toastTimeout;
+
+    function showFeedback(message) {
+      if (!toast || !toastMsg) return;
+      toastMsg.textContent = message;
+      toast.classList.remove('hidden');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 3200);
+    }
+
+    const voiceBtn = document.getElementById('voice-summary-btn');
+    if (voiceBtn) {
+      voiceBtn.addEventListener('click', () => {
+        showFeedback('🔊 Lecture vocale du bilan d’Amel (en Français/Éwé)...');
+      });
+    }
+
+    const memoAudioBtn = document.getElementById('memo-audio-btn');
+    if (memoAudioBtn) {
+      memoAudioBtn.addEventListener('click', () => {
+        showFeedback('▶️ Écoute du mémo de Dr. Akouavi (CMS Adidogomé)...');
+      });
+    }
+
+    const exportBtn = document.getElementById('export-pdf-btn');
+    if (exportBtn) {
+      exportBtn.addEventListener('click', () => {
+        showFeedback('📄 Génération du carnet PDF hors-ligne prêt pour le CMS...');
+      });
+    }
+  })();
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/85 backdrop-blur-xl shadow-[0_8px_24px_rgba(19,93,84,0.12)]" data-active-classes="text-primary font-bold"><div class="flex justify-around items-center h-20 px-space-xs"><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[48px] py-1 text-on-surface-variant hover:text-on-surface transition-colors" data-path="accueil" href="#"><span class="material-symbols-outlined text-[24px]">home</span><span class="font-label-sm text-label-sm mt-0.5">Accueil</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[48px] py-1 text-on-surface-variant hover:text-on-surface transition-colors" data-path="suivi-sante" href="#"><span class="material-symbols-outlined text-[24px]">stethoscope</span><span class="font-label-sm text-label-sm mt-0.5">Suivi santé</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[48px] py-1 text-on-surface-variant hover:text-on-surface transition-colors" data-path="activites-deveil" href="#"><span class="material-symbols-outlined text-[24px]">wb_sunny</span><span class="font-label-sm text-label-sm mt-0.5">Éveil</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[48px] py-1 text-on-surface-variant hover:text-on-surface transition-colors" data-path="soignants-cms" href="#"><span class="material-symbols-outlined text-[24px]">local_hospital</span><span class="font-label-sm text-label-sm mt-0.5">Soignants</span></a><a aria-current="page" class="flex flex-col items-center justify-center min-w-[56px] min-h-[48px] py-1 transition-colors text-primary font-bold" data-path="mon-espace" href="#"><span class="material-symbols-outlined text-[24px]">menu_book</span><span class="font-label-sm text-label-sm mt-0.5">Mon Espace</span></a></div></nav></body></html>

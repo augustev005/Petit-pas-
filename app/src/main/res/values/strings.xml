@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Petit Pas</string>
+    <string name="app_tagline">Chaque petit pas compte.</string>
+    <string name="offline_badge_title">Mode 100% Hors-ligne actif • Mémoire locale</string>
+    <string name="online_offline_ok">● En ligne &amp; Hors connexion : OK</string>
+    <string name="welcome_banner_text">Bienvenue sur votre carnet bienveillant</string>
+    <string name="listen_button">Écouter</string>
+    <string name="emergency_118_title">Urgence Pédiatrique 118</string>
+    <string name="emergency_118_subtitle">SAMU Togo • Gratuit 24h/24</string>
+    <string name="call_118_now">Appeler le 118 Immédiatement</string>
+    <string name="voice_symptom_title">Raconter ce qui arrive à bébé</string>
+    <string name="speak_to_petit_pas">Parler à Petit Pas</string>
+    <string name="cms_adidogome">CMS Adidogomé</string>
+    <string name="dr_akouavi">Dr. Akouavi Mensah</string>
+    <string name="ethical_notice_title">Accompagnement Bienveillant &amp; Carnet Protégé</string>
+    <string name="ethical_notice_body">Cet outil ne remplace pas l\'avis d\'une sage-femme ou d\'un médecin. Données strictement sauvegardées sur votre téléphone, sans collecte ni pistage internet.</string>
+    <string name="nav_home">Accueil</string>
+    <string name="nav_health">Suivi santé</string>
+    <string name="nav_awake">Éveil</string>
+    <string name="nav_caregivers">Soignants</string>
+    <string name="nav_space">Mon Espace</string>
+</resources>

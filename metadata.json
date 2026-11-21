@@ -1,0 +1,6 @@
+{
+  "name": "Petit Pas",
+  "description": "Carnet de santé pédiatrique et maternel 100% hors-ligne avec guidage vocal multilingue (Français, Éwé, Kabyè) pour le Togo.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
