@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Petit Pas — Passeport Santé Maternelle & Infantile (Togo)</title>
+  <meta name="description" content="Chaque petit pas compte. Carnet de santé numérique 100% hors-ligne et assistant vocal multilingue (Français, Éwé, Kabyè, English) pour le suivi maternel et infantile au Togo." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,500,0,0" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #00443D;
+      --primary-container: #135D54;
+      --primary-fixed: #B1EFE3;
+      --on-primary-fixed: #00201C;
+      --secondary: #A83900;
+      --secondary-container: #FC6018;
+      --secondary-fixed: #FFDBCE;
+      --tertiary: #7F000B;
+      --tertiary-container: #BA1A1A;
+      --surface: #F7F9FF;
+      --surface-card: #FFFFFF;
+      --surface-low: #F1F4FA;
+      --surface-high: #E5E8EE;
+      --text-main: #181C20;
+      --text-muted: #3F4947;
+      --border: rgba(190, 201, 198, 0.35);
+    }
+    body.dark-mode {
+      --primary: #95D3C7;
+      --primary-container: #00443D;
+      --primary-fixed: #135D54;
+      --on-primary-fixed: #B1EFE3;
+      --secondary: #FFB59A;
+      --secondary-container: #A83900;
+      --secondary-fixed: #5B1B00;
+      --tertiary: #FFB4AB;
+      --tertiary-container: #93000A;
+      --surface: #0F1417;
+      --surface-card: #181D20;
+      --surface-low: #1D2326;
+      --surface-high: #272E32;
+      --text-main: #E1E6EA;
+      --text-muted: #B8C4C2;
+      --border: rgba(149, 211, 199, 0.2);
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    body {
+      background: var(--surface);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    /* Top Showcase Bar for Desktop / GitHub Pages */
+    .gh-topbar {
+      background: #00352F;
+      color: #FFFFFF;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 13px;
+    }
+    .gh-topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+    }
+    .gh-badge {
+      background: rgba(177, 239, 227, 0.2);
+      color: #B1EFE3;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .gh-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .gh-btn {
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: opacity 0.15s;
+      cursor: pointer;
+      border: none;
+    }
+    .gh-btn:hover { opacity: 0.9; }
+    .gh-btn-primary { background: #FC6018; color: #FFFFFF; }
+    .gh-btn-outline { background: rgba(255,255,255,0.12); color: #FFFFFF; }
+
+    /* Screen Switcher Strip */
+    .screen-switcher-bar {
+      background: var(--surface-card);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+    }
+    .screen-pill {
+      padding: 6px 13px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      border: 1px solid var(--border);
+      background: var(--surface-low);
+      color: var(--text-main);
+      cursor: pointer;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .screen-pill.active {
+      background: #00443D;
+      color: #FFFFFF;
+      border-color: #00443D;
+    }
+
+    /* Main Workspace Layout */
+    .workspace {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px 12px 40px;
+    }
+    .phone-frame {
+      width: 100%;
+      max-width: 440px;
+      background: var(--surface);
+      border-radius: 28px;
+      box-shadow: 0 20px 50px rgba(0, 68, 61, 0.14), 0 0 0 8px var(--surface-card);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 820px;
+      position: relative;
+    }
+    /* Native HTML Screen Iframe View */
+    .iframe-container {
+      width: 100%;
+      height: 820px;
+      border: none;
+      display: none;
+    }
+    .iframe-container.active {
+      display: block;
+    }
+
+    /* Built-in Interactive App Shell */
+    .app-header {
+      background: var(--surface-card);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+    .app-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--primary);
+      background: #F8F9FA;
+    }
+    .app-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.1;
+    }
+    .app-subtitle {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10B981;
+      display: inline-block;
+    }
+    .icon-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: none;
+      background: var(--surface-low);
+      color: var(--primary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .icon-btn.orange {
+      color: #FC6018;
+      background: #FFDBCE;
+    }
+
+    .app-body {
+      flex: 1;
+      padding: 14px 16px 88px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      overflow-y: auto;
+    }
+    .offline-pill {
+      background: var(--surface-low);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .card {
+      background: var(--surface-card);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 4px 14px rgba(0, 68, 61, 0.05);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .hero-logo-box {
+      background: #F8F9FA;
+      border-radius: 12px;
+      padding: 10px;
+      text-align: center;
+    }
+    .hero-logo-img {
+      width: 100%;
+      max-height: 190px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+    .btn-listen {
+      background: var(--surface-high);
+      color: var(--primary);
+      border: none;
+      padding: 7px 14px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+    }
+    .lang-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .lang-btn {
+      padding: 12px;
+      border-radius: 12px;
+      border: none;
+      background: var(--surface-low);
+      color: var(--text-main);
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .lang-btn.active {
+      background: #00443D;
+      color: #FFFFFF;
+    }
+    .emergency-card {
+      background: linear-gradient(135deg, #7F000B, #BA1A1A);
+      color: #FFFFFF;
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .voice-card {
+      background: linear-gradient(135deg, #A83900, #FC6018);
+      color: #FFFFFF;
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .cta-white {
+      background: #FFFFFF;
+      color: #7F000B;
+      border: none;
+      padding: 13px;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+    .cta-emerald {
+      background: #00443D;
+      color: #FFFFFF;
+      border: none;
+      padding: 13px;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .metric-box {
+      background: var(--surface-low);
+      padding: 10px;
+      border-radius: 12px;
+    }
+    .metric-val {
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    .bottom-nav {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--surface-card);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 4px 10px;
+      z-index: 30;
+    }
+    .nav-item {
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      font-size: 10.5px;
+      font-weight: 700;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      cursor: pointer;
+      padding: 4px 10px;
+      border-radius: 12px;
+    }
+    .nav-item.active {
+      color: var(--primary);
+      background: rgba(0, 68, 61, 0.1);
+    }
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #00443D;
+      color: #FFFFFF;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      display: none;
+      z-index: 100;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top GitHub Pages Bar -->
+  <header class="gh-topbar">
+    <div class="gh-topbar-brand">
+      <span>🇹🇬 PETIT PAS • Passeport Santé Maternelle & Infantile</span>
+      <span class="gh-badge">100% Hors-ligne • Éwé / Kabyè / FR</span>
+    </div>
+    <div class="gh-actions">
+      <button class="gh-btn gh-btn-outline" onclick="speakText('Bienvenue sur Petit Pas. Chaque petit pas compte. Votre carnet de santé maternelle et infantile fonctionne cent pour cent hors connexion.')">
+        🔊 Tester la Voix
+      </button>
+      <a class="gh-btn gh-btn-outline" href="antigravity://vscode.git/clone?url=https%3A%2F%2Fgithub.com%2Ftrinova%2Fpetit-pas.git">
+        🚀 Ouvrir dans Antigravity
+      </a>
+      <a class="gh-btn gh-btn-outline" href="https://ais-pre-wqa3p3mdo7kg733kcrf4tr-579195026251.europe-west2.run.app" target="_blank" rel="noopener">
+        📱 Ouvrir dans AI Studio
+      </a>
+      <a class="gh-btn gh-btn-primary" href="https://github.com/trinova/petit-pas" target="_blank" rel="noopener">
+        ⭐ Code & APK GitHub
+      </a>
+    </div>
+  </header>
+
+  <!-- 10 Mockup Screens Direct Switcher -->
+  <nav class="screen-switcher-bar" aria-label="Sélecteur des 10 écrans Petit Pas">
+    <button class="screen-pill active" onclick="loadHtmlScreen('interactive', this)">✨ App Interactive</button>
+    <button class="screen-pill" onclick="loadHtmlScreen('public/assets/aistudio/code__4__5e110feb.html', this)">1. Accueil & Enregistrement</button>
+    <button class="screen-pill" onclick="loadHtmlScreen('public/assets/aistudio/code__13__e9c1e6f0.html', this)">2. Suivi Santé (Carnet Amel K.)</button>
+    <button class="screen-pill" onclick="loadHtmlScreen('public/assets/aistudio/code__11__692c0f67.html', this)">3. Mon Espace (Patricia K.)</button>
+    <button class="screen-pill" onclick="loadHtmlScreen('public/assets/aistudio/code__6__79af7070.html', this)">4. Urgence SAMU 118</button>
+    <button class="screen-pill" onclick="loadHtmlScreen('public/assets/aistudio/code__2__76f63ec3.html', this)">5. Confirmation Audio Éwé</button>
+    <button class="screen-pill" onclick="loadHtmlScreen('public/assets/aistudio/code_6e70f2e4.html', this)">6. Fiche CMS & QR Bluetooth</button>
+    <button class="screen-pill" onclick="loadHtmlScreen('public/assets/aistudio/code__9__7e6e9f04.html', this)">7. Mémo Dr. Akouavi Mensah</button>
+    <button class="screen-pill" onclick="loadHtmlScreen('public/assets/aistudio/code__17__d6ac0a83.html', this)">8. Passeport Officiel A4</button>
+  </nav>
+
+  <!-- Centered Mobile Viewport -->
+  <main class="workspace">
+    <div class="phone-frame">
+
+      <!-- Embedded Iframe for inspecting any of the 10 raw HTML screens -->
+      <iframe id="rawScreenIframe" class="iframe-container" title="Écran Petit Pas"></iframe>
+
+      <!-- Interactive App Mode -->
+      <div id="interactiveAppContainer" style="display:flex; flex-direction:column; flex:1; height:100%;">
+        <div class="app-header">
+          <div class="app-header-left">
+            <img src="public/assets/aistudio/photo_2026-11-20_10-56-50_12e72623.jpg" alt="Logo Petit Pas" class="logo-avatar" />
+            <div>
+              <div class="app-title" id="headerTitle">Petit Pas</div>
+              <div class="app-subtitle"><span class="status-dot"></span> Hors ligne OK • Mémoire locale</div>
+            </div>
+          </div>
+          <div style="display:flex; gap:6px; align-items:center;">
+            <button class="icon-btn" onclick="document.body.classList.toggle('dark-mode')" title="Mode Clair / Sombre">
+              <span class="material-symbols-outlined">dark_mode</span>
+            </button>
+            <button class="icon-btn orange" onclick="speakText('Bienvenue sur Petit Pas. Chaque petit pas compte. Le carnet de santé d\'Amel est à jour et sauvegardé sur votre téléphone.')" title="Assistance vocale">
+              <span class="material-symbols-outlined">record_voice_over</span>
+            </button>
+            <img src="public/assets/aistudio/avatar_patricia.png" alt="Profil Patricia K." class="logo-avatar" style="cursor:pointer;" onclick="loadHtmlScreen('public/assets/aistudio/code__11__692c0f67.html', document.querySelectorAll('.screen-pill')[3])" title="Ouvrir le profil de Patricia K." />
+          </div>
+        </div>
+
+        <div class="app-body" id="tabContentArea">
+          <div class="offline-pill">
+            <span>● En ligne & Hors connexion : OK</span>
+            <span>AES-256 Local</span>
+          </div>
+
+          <!-- Official Logo Hero Card -->
+          <div class="card">
+            <div class="hero-logo-box">
+              <img src="public/assets/aistudio/photo_2026-11-20_10-56-50_12e72623.jpg" alt="Petit Pas - Chaque petit pas compte" class="hero-logo-img" />
+            </div>
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+              <span style="font-size:12.5px; font-weight:700;">❤️ Bienvenue sur votre carnet bienveillant</span>
+              <button class="btn-listen" onclick="speakText('Bienvenue sur Petit Pas. Chaque petit pas compte. Votre carnet bienveillant fonctionne même sans réseau internet.')">
+                🔊 Écouter
+              </button>
+            </div>
+          </div>
+
+          <!-- Language Selector -->
+          <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <strong style="font-size:14px;">🗣️ Langue parlée & instructions</strong>
+              <span style="font-size:11px; background:#FFDBCE; color:#A83900; padding:3px 8px; border-radius:999px; font-weight:700;">Audio direct</span>
+            </div>
+            <div class="lang-grid">
+              <button class="lang-btn active" onclick="selectLang(this, 'Français', 'Bienvenue sur Petit Pas. Votre carnet de santé est protégé hors-ligne.')">
+                <div><strong>Français</strong><br/><small>Voix active</small></div>
+                <span>🔊</span>
+              </button>
+              <button class="lang-btn" onclick="selectLang(this, 'Eʋegbe (Éwé)', 'Woezɔ ɖe Petit Pas dzi. Wò dɔwɔwɔa dze edzi nyuie le wò kaƒomɔ me !')">
+                <div><strong>Eʋegbe</strong><br/><small>Éwé</small></div>
+                <span>🔊</span>
+              </button>
+              <button class="lang-btn" onclick="selectLang(this, 'Kabɩyɛ (Kabyè)', 'CAKɩ Petit Pas yɔɔ. Amel kʊdɔŋ takayaɣ wɛ dedie.')">
+                <div><strong>Kabɩyɛ</strong><br/><small>Kabyè</small></div>
+                <span>🔊</span>
+              </button>
+              <button class="lang-btn" onclick="selectLang(this, 'English', 'Welcome to Petit Pas. Every little step counts.')">
+                <div><strong>English</strong><br/><small>Audio guide</small></div>
+                <span>🔊</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Active Child Summary Card (Amel K.) -->
+          <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
+              <div style="display:flex; align-items:center; gap:12px;">
+                <img src="public/assets/aistudio/avatar_amel.png" alt="Amel K." style="width:56px; height:56px; border-radius:50%; object-fit:cover; border:2px solid var(--primary);" />
+                <div>
+                  <span style="font-size:11px; font-weight:800; color:var(--primary);">PASSEPORT PÉDIATRIQUE • PEV À JOUR</span>
+                  <h3 style="font-size:18px; font-weight:800;">Amel K. (8 mois • Fille)</h3>
+                  <p style="font-size:12px; color:var(--text-muted);">Mère : Patricia K. • Tokoin-Solidarité, Lomé</p>
+                </div>
+              </div>
+              <button class="icon-btn orange" onclick="speakText('Carnet de santé d\'Amel K., 8 mois. Poids 7 virgule 85 kilos, normal sur la courbe OMS. 4 vaccins sur 5 reçus.')">
+                <span class="material-symbols-outlined">volume_up</span>
+              </button>
+            </div>
+            <div class="metrics-grid">
+              <div class="metric-box">
+                <small style="font-size:11px; color:var(--text-muted);">Poids OMS</small>
+                <div class="metric-val">7,85 kg</div>
+                <small style="font-size:10px; color:#10B981; font-weight:700;">+320g • P50</small>
+              </div>
+              <div class="metric-box">
+                <small style="font-size:11px; color:var(--text-muted);">Taille</small>
+                <div class="metric-val">68 cm</div>
+                <small style="font-size:10px; color:var(--primary); font-weight:700;">Normal P52</small>
+              </div>
+              <div class="metric-box">
+                <small style="font-size:11px; color:var(--text-muted);">Vaccins PEV</small>
+                <div class="metric-val">4/5</div>
+                <small style="font-size:10px; color:#A83900; font-weight:700;">80% reçus</small>
+              </div>
+            </div>
+            <button class="cta-emerald" onclick="loadHtmlScreen('public/assets/aistudio/code__13__e9c1e6f0.html', document.querySelectorAll('.screen-pill')[2])">
+              📖 Ouvrir le Carnet de Santé & Conseils Dr. Akouavi
+            </button>
+          </div>
+
+          <!-- Urgence Pédiatrique 118 -->
+          <div class="emergency-card">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <h3 style="font-size:17px; font-weight:800;">🚨 Urgence Pédiatrique 118</h3>
+                <small style="font-weight:700; opacity:0.9;">SAMU TOGO • GRATUIT 24H/24 SANS INTERNET</small>
+              </div>
+              <button class="icon-btn" style="background:rgba(255,255,255,0.2); color:#FFF;" onclick="speakText('Urgence Pédiatrique 118. Appel téléphonique direct GSM sans internet en cas de convulsion, détresse respiratoire ou fièvre très élevée.')">
+                <span class="material-symbols-outlined">volume_up</span>
+              </button>
+            </div>
+            <p style="font-size:12.5px; line-height:1.45;">
+              Appel téléphonique direct GSM sans internet. En cas de convulsion, détresse respiratoire ou fièvre &gt; 38,5°C.
+            </p>
+            <button class="cta-white" onclick="loadHtmlScreen('public/assets/aistudio/code__6__79af7070.html', document.querySelectorAll('.screen-pill')[4])">
+              📞 Appeler le 118 / Ouvrir Alerte Signes de Danger
+            </button>
+          </div>
+
+          <!-- Raconter ce qui arrive à bébé -->
+          <div class="voice-card">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <h3 style="font-size:17px; font-weight:800;">🎙️ Raconter ce qui arrive à bébé</h3>
+                <small style="font-weight:700; opacity:0.95;">Étape 1 sur 3 • Guidage vocal bienveillant</small>
+              </div>
+            </div>
+            <p style="font-size:12.5px; line-height:1.45;">
+              Dictez ce qui vous inquiète (toux, pleurs, selle liquide) en Français, Éwé ou Kabyè pour préparer la consultation CMS.
+            </p>
+            <button class="cta-white" style="color:#A83900;" onclick="loadHtmlScreen('public/assets/aistudio/code__2__76f63ec3.html', document.querySelectorAll('.screen-pill')[5])">
+              🎤 Écouter la Confirmation Vocale Éwé (Nyasia dze edzi nyuie)
+            </button>
+          </div>
+
+          <!-- CMS Adidogomé Card -->
+          <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <img src="public/assets/aistudio/avatar_dr_akouavi.png" alt="Dr. Akouavi Mensah" style="width:48px; height:48px; border-radius:50%; object-fit:cover; border:2px solid var(--primary);" />
+                <div>
+                  <h3 style="font-size:16px; font-weight:800; color:var(--primary);">🏥 CMS Adidogomé ● Ouvert 24h/24</h3>
+                  <p style="font-size:12px; color:var(--text-muted);">450 m • Soignante : <strong>Dr. Akouavi Mensah</strong></p>
+                </div>
+              </div>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+              <button class="cta-emerald" onclick="loadHtmlScreen('public/assets/aistudio/code__9__7e6e9f04.html', document.querySelectorAll('.screen-pill')[7])">
+                🩺 Mémo Dr. Akouavi
+              </button>
+              <button class="cta-emerald" style="background:#135D54;" onclick="loadHtmlScreen('public/assets/aistudio/code_6e70f2e4.html', document.querySelectorAll('.screen-pill')[6])">
+                📡 Partage QR & PDF
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Navigation Bar -->
+        <nav class="bottom-nav">
+          <button class="nav-item active" onclick="loadHtmlScreen('interactive', document.querySelectorAll('.screen-pill')[0])">
+            <span class="material-symbols-outlined">home</span>
+            <span>Accueil</span>
+          </button>
+          <button class="nav-item" onclick="loadHtmlScreen('public/assets/aistudio/code__13__e9c1e6f0.html', document.querySelectorAll('.screen-pill')[2])">
+            <span class="material-symbols-outlined">medical_services</span>
+            <span>Suivi santé</span>
+          </button>
+          <button class="nav-item" onclick="loadHtmlScreen('public/assets/aistudio/code__9__7e6e9f04.html', document.querySelectorAll('.screen-pill')[7])">
+            <span class="material-symbols-outlined">wb_sunny</span>
+            <span>Éveil</span>
+          </button>
+          <button class="nav-item" onclick="loadHtmlScreen('public/assets/aistudio/code_6e70f2e4.html', document.querySelectorAll('.screen-pill')[6])">
+            <span class="material-symbols-outlined">local_hospital</span>
+            <span>Soignants</span>
+          </button>
+          <button class="nav-item" onclick="loadHtmlScreen('public/assets/aistudio/code__11__692c0f67.html', document.querySelectorAll('.screen-pill')[3])">
+            <span class="material-symbols-outlined">menu_book</span>
+            <span>Mon Espace</span>
+          </button>
+        </nav>
+      </div>
+
+    </div>
+  </main>
+
+  <div id="toastBanner" class="toast"></div>
+
+  <script>
+    function showToast(msg) {
+      const t = document.getElementById('toastBanner');
+      t.textContent = msg;
+      t.style.display = 'block';
+      setTimeout(() => { t.style.display = 'none'; }, 3500);
+    }
+
+    function speakText(text) {
+      showToast('🔊 ' + text.slice(0, 75) + '...');
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = 'fr-FR';
+        u.rate = 0.9;
+        window.speechSynthesis.speak(u);
+      }
+    }
+
+    function selectLang(btn, langName, sampleText) {
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      speakText(sampleText);
+    }
+
+    function loadHtmlScreen(path, btn) {
+      if (btn) {
+        document.querySelectorAll('.screen-pill').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+      }
+      const iframe = document.getElementById('rawScreenIframe');
+      const interactive = document.getElementById('interactiveAppContainer');
+      if (path === 'interactive') {
+        iframe.classList.remove('active');
+        interactive.style.display = 'flex';
+      } else {
+        interactive.style.display = 'none';
+        iframe.src = path;
+        iframe.classList.add('active');
+      }
+    }
+  </script>
+</body>
+</html>

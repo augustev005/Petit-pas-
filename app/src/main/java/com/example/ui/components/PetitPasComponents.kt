@@ -208,16 +208,16 @@ fun PetitPasTopBar(
                         modifier = Modifier
                             .size(40.dp)
                             .clip(CircleShape)
-                            .background(MaterialTheme.colorScheme.primary)
+                            .border(2.dp, MaterialTheme.colorScheme.primary, CircleShape)
                             .clickable(onClick = onProfileClick)
                             .testTag("top_profile_button"),
                         contentAlignment = Alignment.Center
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.Person,
+                        Image(
+                            painter = painterResource(id = R.drawable.avatar_patricia),
                             contentDescription = "Mon Profil",
-                            tint = MaterialTheme.colorScheme.onPrimary,
-                            modifier = Modifier.size(20.dp)
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.fillMaxSize()
                         )
                     }
                 }

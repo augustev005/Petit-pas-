@@ -1,6 +1,8 @@
 package com.example.ui.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -70,10 +72,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.example.R
 import com.example.ui.components.EthicalReassuranceFooter
 import com.example.ui.components.LanguageSelectorGrid
 import com.example.ui.components.OfflineStatusPill
@@ -406,16 +411,18 @@ fun MySpaceScreen(
                         ) {
                             Box(
                                 modifier = Modifier
-                                    .size(64.dp)
-                                    .clip(CircleShape)
-                                    .background(MaterialTheme.colorScheme.primaryContainer),
-                                contentAlignment = Alignment.Center
+                                    .size(68.dp)
+                                    .clickable { showEditProfileModal = true },
+                                contentAlignment = Alignment.BottomEnd
                             ) {
-                                Icon(
-                                    imageVector = Icons.Default.Person,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onPrimary,
-                                    modifier = Modifier.size(34.dp)
+                                Image(
+                                    painter = painterResource(id = R.drawable.avatar_patricia),
+                                    contentDescription = "Photo de profil de ${state.profile.name}",
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier
+                                        .size(68.dp)
+                                        .clip(CircleShape)
+                                        .border(2.dp, MaterialTheme.colorScheme.primary, CircleShape)
                                 )
                             }
                             Column {
@@ -730,20 +737,15 @@ fun MySpaceScreen(
                                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Box(
+                                Image(
+                                    painter = painterResource(id = R.drawable.avatar_amel),
+                                    contentDescription = "Photo d'Amel K.",
+                                    contentScale = ContentScale.Crop,
                                     modifier = Modifier
-                                        .size(50.dp)
+                                        .size(54.dp)
                                         .clip(CircleShape)
-                                        .background(SecondaryFixed),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.ChildCare,
-                                        contentDescription = null,
-                                        tint = MaterialTheme.colorScheme.secondary,
-                                        modifier = Modifier.size(28.dp)
-                                    )
-                                }
+                                        .border(2.dp, PrimaryFixed, CircleShape)
+                                )
                                 Column {
                                     Text(
                                         text = child?.name ?: "Amel K.",

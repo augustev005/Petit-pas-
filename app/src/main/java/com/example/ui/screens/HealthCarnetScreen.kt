@@ -1,7 +1,9 @@
 package com.example.ui.screens
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -65,11 +67,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.example.R
 import com.example.data.VaccineRecordEntity
 import com.example.ui.components.EthicalReassuranceFooter
 import com.example.ui.components.OmsGrowthChartCanvas
@@ -324,18 +329,33 @@ fun HealthCarnetScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Box(
-                            modifier = Modifier
-                                .size(60.dp)
-                                .clip(CircleShape)
-                                .background(PrimaryFixed),
-                            contentAlignment = Alignment.Center
+                            modifier = Modifier.size(64.dp),
+                            contentAlignment = Alignment.BottomEnd
                         ) {
-                            Icon(
-                                imageVector = Icons.Default.ChildCare,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.size(34.dp)
+                            Image(
+                                painter = painterResource(id = R.drawable.avatar_amel),
+                                contentDescription = "Photo de profil d'Amel K.",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .size(64.dp)
+                                    .clip(CircleShape)
+                                    .border(2.dp, PrimaryFixed, CircleShape)
                             )
+                            Box(
+                                modifier = Modifier
+                                    .size(20.dp)
+                                    .clip(CircleShape)
+                                    .background(MaterialTheme.colorScheme.primary)
+                                    .border(2.dp, MaterialTheme.colorScheme.surfaceContainerLowest, CircleShape),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.CheckCircle,
+                                    contentDescription = "Identité vérifiée",
+                                    tint = MaterialTheme.colorScheme.onPrimary,
+                                    modifier = Modifier.size(12.dp)
+                                )
+                            }
                         }
 
                         Column(modifier = Modifier.weight(1f)) {
@@ -552,18 +572,33 @@ fun HealthCarnetScreen(
                             modifier = Modifier.weight(1f)
                         ) {
                             Box(
-                                modifier = Modifier
-                                    .size(48.dp)
-                                    .clip(CircleShape)
-                                    .background(MaterialTheme.colorScheme.primaryContainer),
-                                contentAlignment = Alignment.Center
+                                modifier = Modifier.size(52.dp),
+                                contentAlignment = Alignment.BottomEnd
                             ) {
-                                Text(
-                                    text = "AM",
-                                    style = MaterialTheme.typography.titleMedium,
-                                    color = MaterialTheme.colorScheme.onPrimary,
-                                    fontWeight = FontWeight.Bold
+                                Image(
+                                    painter = painterResource(id = R.drawable.avatar_dr_akouavi),
+                                    contentDescription = "Portrait de Dr. Akouavi Mensah, Sage-femme clinicienne",
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier
+                                        .size(52.dp)
+                                        .clip(CircleShape)
+                                        .border(2.dp, MaterialTheme.colorScheme.primary, CircleShape)
                                 )
+                                Box(
+                                    modifier = Modifier
+                                        .size(18.dp)
+                                        .clip(CircleShape)
+                                        .background(MaterialTheme.colorScheme.primary)
+                                        .border(2.dp, MaterialTheme.colorScheme.surfaceContainerLowest, CircleShape),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.CheckCircle,
+                                        contentDescription = "Certifiée CMS",
+                                        tint = MaterialTheme.colorScheme.onPrimary,
+                                        modifier = Modifier.size(11.dp)
+                                    )
+                                }
                             }
                             Column {
                                 Row(
