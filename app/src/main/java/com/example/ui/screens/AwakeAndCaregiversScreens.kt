@@ -128,6 +128,14 @@ fun AwakeAndNutritionScreen(
             }
         }
 
+        // Interactive 4-option Questionnaire ("Oui, souvent", "Parfois", "Pas encore", "Je ne sais pas" + "Suivant")
+        item {
+            SimpleMilestoneQuestionnaireCard(
+                childName = child?.name ?: "Amel K.",
+                onListenText = onListenText
+            )
+        }
+
         // Category Filter Row
         item {
             Row(

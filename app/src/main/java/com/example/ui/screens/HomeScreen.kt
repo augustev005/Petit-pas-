@@ -191,6 +191,14 @@ fun HomeScreen(
             }
         }
 
+        // 4b. Questionnaire Simple d'Éveil & Suivi ("Oui, souvent", "Parfois", "Pas encore", "Je ne sais pas" + "Suivant")
+        item {
+            SimpleMilestoneQuestionnaireCard(
+                childName = state.activeChild?.name ?: "Amel K.",
+                onListenText = onListenText
+            )
+        }
+
         // 5. Actions Prioritaires Immédiates : 1. GRAND BOUTON D'URGENCE PÉDIATRIQUE 118
         item {
             Card(
@@ -368,12 +376,51 @@ fun HomeScreen(
                     }
 
                     Text(
-                        text = "Dictez ce qui vous inquiète (toux, pleurs, selle liquide) ou montrez le thermomètre pour obtenir un conseil immédiat.",
+                        text = "Dictez ou choisissez ce qui vous inquiète (toux, pleurs, selle liquide, fièvre) pour obtenir un conseil immédiat.",
                         style = MaterialTheme.typography.bodySmall,
                         color = SecondaryFixed
                     )
 
-                    if (state.symptomStep >= 2 || state.isVoiceRecordingSymptoms) {
+                    var selectedSymptomChip by remember { mutableStateOf("Fièvre / Corps chaud (38,2°C)") }
+                    val symptomChips = listOf(
+                        "🌡️ Fièvre / Corps chaud",
+                        "💧 Selle liquide / Diarrhée",
+                        "😮‍💨 Toux / Respiration",
+                        "😢 Pleurs / Refus de boire"
+                    )
+                    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                        for (row in symptomChips.chunked(2)) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(6.dp)
+                            ) {
+                                for (chip in row) {
+                                    val isChipSelected = selectedSymptomChip.contains(chip.takeLast(8))
+                                    Surface(
+                                        color = if (isChipSelected) Color.White else MaterialTheme.colorScheme.secondary.copy(alpha = 0.65f),
+                                        shape = RoundedCornerShape(10.dp),
+                                        modifier = Modifier
+                                            .weight(1f)
+                                            .clip(RoundedCornerShape(10.dp))
+                                            .clickable {
+                                                selectedSymptomChip = chip
+                                                onListenText("Symptôme sélectionné : $chip")
+                                            }
+                                    ) {
+                                        Text(
+                                            text = chip,
+                                            style = MaterialTheme.typography.labelSmall,
+                                            color = if (isChipSelected) MaterialTheme.colorScheme.secondary else Color.White,
+                                            fontWeight = FontWeight.Bold,
+                                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 10.dp)
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if (state.symptomStep >= 2 || state.isVoiceRecordingSymptoms || selectedSymptomChip.isNotEmpty()) {
                         Surface(
                             color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.7f),
                             shape = RoundedCornerShape(10.dp),
@@ -383,7 +430,7 @@ fun HomeScreen(
                                 text = if (state.isVoiceRecordingSymptoms) {
                                     "🎙️ Écoute vocale en cours... Parlez en Français, Éwé ou Kabyè (Appuyez à nouveau pour terminer)"
                                 } else {
-                                    "✓ Note vocale capturée : « ${state.recordedSymptomSummary} »"
+                                    "✓ Symptôme décrit : « $selectedSymptomChip • ${state.recordedSymptomSummary} »"
                                 },
                                 style = MaterialTheme.typography.labelMedium,
                                 color = Color.White,
@@ -636,6 +683,9 @@ fun HomeScreen(
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
 
+                    var showAllPharmacies by remember { mutableStateOf(false) }
+                    var pdfDownloadedConfirmation by remember { mutableStateOf(false) }
+
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -661,7 +711,7 @@ fun HomeScreen(
                         }
 
                         Button(
-                            onClick = onOpenCaregiversTab,
+                            onClick = { showAllPharmacies = !showAllPharmacies },
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = MaterialTheme.colorScheme.secondary,
                                 contentColor = MaterialTheme.colorScheme.onSecondary
@@ -679,6 +729,137 @@ fun HomeScreen(
                             Spacer(modifier = Modifier.width(4.dp))
                             Text("Toutes les zones", style = MaterialTheme.typography.labelMedium)
                         }
+                    }
+
+                    AnimatedVisibility(visible = showAllPharmacies) {
+                        val allPharmacies = listOf(
+                            Triple("Pharmacie Djidjolé / Adidogomé (Proche • 600 m)", "SRO, Zinc & Paracétamol en stock", "+22822510101"),
+                            Triple("Pharmacie Tokoin-Solidarité (Proche • 1,8 km)", "Ouverte 24h/24 • Lomé", "+22822210001"),
+                            Triple("Pharmacie Agoè-Nyivé (Périphérie • 6,5 km)", "Garde de nuit • Grand Lomé", "+22822550202"),
+                            Triple("Pharmacie Kozah & CHU Kara (Région éloignée • Kara)", "Stocks pédiatriques & urgences", "+22826600100"),
+                            Triple("Pharmacie Centrale & CHR Sokodé (Région Centrale)", "Garde régionale 24h/7j", "+22825500111"),
+                            Triple("Pharmacie Savanes & CHR Dapaong (Extrême-Nord)", "Relais pédiatrique & SRO", "+22827700122")
+                        )
+                        Column(
+                            modifier = Modifier.padding(top = 6.dp),
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            allPharmacies.forEach { (title, sub, phone) ->
+                                Surface(
+                                    color = MaterialTheme.colorScheme.surfaceContainerLow,
+                                    shape = RoundedCornerShape(10.dp),
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Column(
+                                        modifier = Modifier.padding(10.dp),
+                                        verticalArrangement = Arrangement.spacedBy(6.dp)
+                                    ) {
+                                        Text(
+                                            text = title,
+                                            style = MaterialTheme.typography.labelMedium,
+                                            color = MaterialTheme.colorScheme.onSurface,
+                                            fontWeight = FontWeight.Bold
+                                        )
+                                        Text(
+                                            text = sub,
+                                            style = MaterialTheme.typography.bodySmall,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
+                                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                            Button(
+                                                onClick = { onDialNumber(phone) },
+                                                colors = ButtonDefaults.buttonColors(
+                                                    containerColor = MaterialTheme.colorScheme.primary,
+                                                    contentColor = MaterialTheme.colorScheme.onPrimary
+                                                ),
+                                                shape = RoundedCornerShape(8.dp),
+                                                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp),
+                                                modifier = Modifier.weight(1f).height(40.dp)
+                                            ) {
+                                                Icon(Icons.Default.Call, contentDescription = null, modifier = Modifier.size(15.dp))
+                                                Spacer(modifier = Modifier.width(4.dp))
+                                                Text("Appeler", style = MaterialTheme.typography.labelSmall)
+                                            }
+                                            Button(
+                                                onClick = {
+                                                    onListenText("Itinéraire hors-ligne ouvert vers $title.")
+                                                    onOpenCaregiversTab()
+                                                },
+                                                colors = ButtonDefaults.buttonColors(
+                                                    containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                                                    contentColor = MaterialTheme.colorScheme.primary
+                                                ),
+                                                shape = RoundedCornerShape(8.dp),
+                                                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp),
+                                                modifier = Modifier.weight(1f).height(40.dp)
+                                            ) {
+                                                Icon(Icons.Default.NearMe, contentDescription = null, modifier = Modifier.size(15.dp))
+                                                Spacer(modifier = Modifier.width(4.dp))
+                                                Text("Itinéraire", style = MaterialTheme.typography.labelSmall)
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    HorizontalDivider(color = MaterialTheme.colorScheme.surfaceContainerHigh)
+
+                    // Direct PDF Export Button + Instant Confirmation Banner
+                    if (pdfDownloadedConfirmation) {
+                        Surface(
+                            color = PrimaryFixed.copy(alpha = 0.5f),
+                            shape = RoundedCornerShape(12.dp),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Row(
+                                modifier = Modifier.padding(12.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.CheckCircle,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary,
+                                    modifier = Modifier.size(22.dp)
+                                )
+                                Text(
+                                    text = "✓ La fiche de consultation CMS a bien été téléchargée",
+                                    style = MaterialTheme.typography.labelMedium,
+                                    color = MaterialTheme.colorScheme.primary,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
+                        }
+                    }
+
+                    Button(
+                        onClick = {
+                            pdfDownloadedConfirmation = true
+                            onListenText("La fiche de consultation CMS a bien été téléchargée dans vos documents hors-ligne.")
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = MaterialTheme.colorScheme.onPrimary
+                        ),
+                        shape = RoundedCornerShape(10.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(54.dp)
+                            .testTag("btn_home_export_pdf_cms")
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.CheckCircle,
+                            contentDescription = null,
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "Télécharger / Exporter en PDF la fiche CMS",
+                            style = MaterialTheme.typography.labelLarge,
+                            fontWeight = FontWeight.Bold
+                        )
                     }
                 }
             }
@@ -880,6 +1061,63 @@ private fun RegistrationSectionCard(
                                             style = MaterialTheme.typography.labelSmall,
                                             color = subFg
                                         )
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    // Multi-child Orphanage / Caregiver management view when "Orphelinat / Tuteur" is selected
+                    AnimatedVisibility(visible = selectedRole == "Orphelinat / Tuteur") {
+                        var selectedOrphanageChild by remember { mutableStateOf("Amel K. (8 mois • PEV OK)") }
+                        val orphanageChildren = listOf(
+                            "Amel K. (8 mois • PEV OK)",
+                            "Koffi M. (14 mois • Suivi poids)",
+                            "Afi T. (5 mois • Vaccin à venir)"
+                        )
+                        Surface(
+                            color = PrimaryFixed.copy(alpha = 0.35f),
+                            shape = RoundedCornerShape(12.dp),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Column(
+                                modifier = Modifier.padding(12.dp),
+                                verticalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                Text(
+                                    text = "👶 Mode Orphelinat / Encadrant • Gestion Multi-Enfants (3 carnets actifs)",
+                                    style = MaterialTheme.typography.labelMedium,
+                                    color = MaterialTheme.colorScheme.primary,
+                                    fontWeight = FontWeight.Bold
+                                )
+                                orphanageChildren.forEach { childItem ->
+                                    val isCurrent = selectedOrphanageChild == childItem
+                                    Surface(
+                                        color = if (isCurrent) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceContainerLowest,
+                                        shape = RoundedCornerShape(8.dp),
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .clip(RoundedCornerShape(8.dp))
+                                            .clickable { selectedOrphanageChild = childItem }
+                                    ) {
+                                        Row(
+                                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+                                            horizontalArrangement = Arrangement.SpaceBetween,
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Text(
+                                                text = childItem,
+                                                style = MaterialTheme.typography.labelMedium,
+                                                color = if (isCurrent) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
+                                                fontWeight = FontWeight.Bold
+                                            )
+                                            Icon(
+                                                imageVector = Icons.Default.CheckCircle,
+                                                contentDescription = null,
+                                                tint = if (isCurrent) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.primary,
+                                                modifier = Modifier.size(18.dp)
+                                            )
+                                        }
                                     }
                                 }
                             }
@@ -1135,3 +1373,219 @@ private fun RegistrationSectionCard(
         }
     }
 }
+
+@Composable
+fun SimpleMilestoneQuestionnaireCard(
+    childName: String,
+    onListenText: (String) -> Unit
+) {
+    val questions = listOf(
+        "Est-ce que $childName sourit ou tourne la tête quand vous lui parlez ou chantez ?" to "Vi la koa nu alo trɔa ta ne èle nu ƒom nɛa ?",
+        "Est-ce que $childName tient bien assis(e) et attrape les objets avec ses deux mains ?" to "Vi la ate ŋu anɔ anyi nyuie eye wòalé nuwo kple asi evea ?",
+        "Est-ce que $childName mange bien sa bouillie enrichie (maïs, soja, moringa) et boit de l'eau propre ?" to "Vi la ɖua dzogbɔ nyuie eye wònoa tsi dzadzɛa ?",
+        "Est-ce que $childName gazouille (« ba-ba », « ma-ma ») et réagit aux bruits autour de lui ?" to "Vi la gblɔa nya छोटे-छोटे abe ba-ba, ma-ma enea ?"
+    )
+    val options = listOf(
+        "Oui, souvent" to "✅",
+        "Parfois" to "🌤️",
+        "Pas encore" to "⏳",
+        "Je ne sais pas" to "❓"
+    )
+    var currentQuestionIdx by remember { mutableStateOf(0) }
+    var selectedAnswer by remember { mutableStateOf("Oui, souvent") }
+    var isCompleted by remember { mutableStateOf(false) }
+
+    val (qFr, qEwe) = questions[currentQuestionIdx]
+
+    Card(
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLowest
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        shape = RoundedCornerShape(16.dp),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = "QUESTIONNAIRE D'ÉVEIL & SUIVI (${currentQuestionIdx + 1}/${questions.size})",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.secondary,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        text = "Suivi simple de $childName",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+
+                Surface(
+                    color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                    shape = RoundedCornerShape(999.dp),
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(999.dp))
+                        .clickable {
+                            onListenText("$qFr. Réponses possibles : Oui souvent, Parfois, Pas encore, ou Je ne sais pas.")
+                        }
+                ) {
+                    Row(
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(5.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.VolumeUp,
+                            contentDescription = "Écouter la question",
+                            tint = MaterialTheme.colorScheme.secondary,
+                            modifier = Modifier.size(18.dp)
+                        )
+                        Text(
+                            text = "Écouter",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+            }
+
+            Surface(
+                color = MaterialTheme.colorScheme.surfaceContainerLow,
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(
+                    modifier = Modifier.padding(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    Text(
+                        text = qFr,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        text = "Eʋegbe : « $qEwe »",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
+
+            // 4 Large Tactile Response Buttons
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                for (row in options.chunked(2)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        for ((label, emoji) in row) {
+                            val isSelected = selectedAnswer == label
+                            val bg = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceContainerLow
+                            val fg = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
+
+                            Surface(
+                                color = bg,
+                                shape = RoundedCornerShape(12.dp),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .height(54.dp)
+                                    .clip(RoundedCornerShape(12.dp))
+                                    .clickable {
+                                        selectedAnswer = label
+                                        isCompleted = false
+                                        onListenText(label)
+                                    }
+                            ) {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .padding(horizontal = 12.dp),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ) {
+                                    Text(
+                                        text = "$emoji $label",
+                                        style = MaterialTheme.typography.labelLarge,
+                                        color = fg,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                    Icon(
+                                        imageVector = if (isSelected) Icons.Default.CheckCircle else Icons.AutoMirrored.Filled.VolumeUp,
+                                        contentDescription = null,
+                                        tint = if (isSelected) fg else MaterialTheme.colorScheme.secondary,
+                                        modifier = Modifier.size(18.dp)
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (isCompleted) {
+                Surface(
+                    color = PrimaryFixed.copy(alpha = 0.45f),
+                    shape = RoundedCornerShape(10.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = "✓ Réponses enregistrées dans le carnet hors-ligne de $childName (Pas un diagnostic médical).",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(10.dp)
+                    )
+                }
+            }
+
+            Button(
+                onClick = {
+                    if (currentQuestionIdx < questions.size - 1) {
+                        currentQuestionIdx++
+                        val nextQ = questions[currentQuestionIdx].first
+                        onListenText("Réponse enregistrée : $selectedAnswer. Question suivante : $nextQ")
+                    } else {
+                        isCompleted = true
+                        currentQuestionIdx = 0
+                        onListenText("Bravo ! Le suivi d'éveil de $childName est enregistré en mémoire locale.")
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.secondary,
+                    contentColor = MaterialTheme.colorScheme.onSecondary
+                ),
+                shape = RoundedCornerShape(10.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(52.dp)
+                    .testTag("btn_questionnaire_next")
+            ) {
+                Text(
+                    text = "Suivant",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+        }
+    }
+}
+

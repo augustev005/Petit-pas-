@@ -2,540 +2,208 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Petit Pas — Passeport Santé Maternelle & Infantile (Togo)</title>
   <meta name="description" content="Chaque petit pas compte. Carnet de santé numérique 100% hors-ligne et assistant vocal multilingue (Français, Éwé, Kabyè, English) pour le suivi maternel et infantile au Togo." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,600&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,500,0,0" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
   <style>
     :root {
       --primary: #00443D;
       --primary-container: #135D54;
-      --primary-fixed: #B1EFE3;
+      --primary-fixed: #ACEFE3;
       --on-primary-fixed: #00201C;
       --secondary: #A83900;
       --secondary-container: #FC6018;
-      --secondary-fixed: #FFDBCE;
-      --tertiary: #7F000B;
-      --tertiary-container: #BA1A1A;
+      --secondary-fixed: #FFDBCF;
       --surface: #F7F9FF;
       --surface-card: #FFFFFF;
-      --surface-low: #F1F4FA;
-      --surface-high: #E5E8EE;
+      --surface-low: #F1F4F9;
       --text-main: #181C20;
-      --text-muted: #3F4947;
-      --border: rgba(190, 201, 198, 0.35);
+      --text-muted: #3F4946;
+      --border: rgba(191, 201, 197, 0.38);
     }
     body.dark-mode {
-      --primary: #95D3C7;
+      --primary: #90D3C7;
       --primary-container: #00443D;
       --primary-fixed: #135D54;
-      --on-primary-fixed: #B1EFE3;
+      --on-primary-fixed: #ACEFE3;
       --secondary: #FFB59A;
       --secondary-container: #A83900;
-      --secondary-fixed: #5B1B00;
-      --tertiary: #FFB4AB;
-      --tertiary-container: #93000A;
+      --secondary-fixed: #531800;
       --surface: #0F1417;
       --surface-card: #181D20;
       --surface-low: #1D2326;
-      --surface-high: #272E32;
       --text-main: #E1E6EA;
       --text-muted: #B8C4C2;
-      --border: rgba(149, 211, 199, 0.2);
+      --border: rgba(144, 211, 199, 0.22);
     }
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-tap-highlight-color: transparent;
     }
-    body {
+    html, body {
       background: var(--surface);
       color: var(--text-main);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      height: 100dvh;
+      width: 100vw;
+      overflow: hidden;
     }
-
-    /* Main Workspace Layout */
+    .material-symbols-outlined {
+      width: 1em;
+      height: 1em;
+      max-width: 1em;
+      overflow: hidden;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      line-height: 1;
+      vertical-align: middle;
+    }
     .workspace {
-      flex: 1;
+      width: 100%;
+      height: 100dvh;
       display: flex;
       justify-content: center;
       align-items: stretch;
-      padding: 0;
+      background: var(--surface);
     }
     .phone-frame {
       width: 100%;
       max-width: 480px;
+      height: 100dvh;
       background: var(--surface);
       display: flex;
       flex-direction: column;
-      min-height: 100dvh;
       position: relative;
       margin: 0 auto;
+      overflow: hidden;
     }
-    @media (min-width: 600px) {
+    @media (min-width: 640px) {
       .workspace {
-        padding: 20px 12px;
-        align-items: flex-start;
+        padding: 16px 12px;
+        background: #E7ECEF;
+      }
+      body.dark-mode .workspace {
+        background: #090C0E;
       }
       .phone-frame {
-        border-radius: 28px;
-        box-shadow: 0 20px 50px rgba(0, 68, 61, 0.14), 0 0 0 8px var(--surface-card);
-        overflow: hidden;
-        min-height: 860px;
+        height: calc(100dvh - 32px);
+        max-height: 920px;
+        border-radius: 30px;
+        box-shadow: 0 24px 60px rgba(0, 68, 61, 0.18), 0 0 0 8px var(--surface-card);
       }
     }
-    /* Native HTML Screen Iframe View */
     .iframe-container {
       width: 100%;
       flex: 1;
-      min-height: calc(100dvh - 62px);
+      height: 100%;
       border: none;
-      display: none;
+      background: var(--surface);
+      opacity: 1;
+      transition: opacity 0.16s ease-out;
     }
-    .iframe-container.active {
-      display: block;
-    }
-
-    /* Built-in Interactive App Shell */
-    .app-header {
-      background: var(--surface-card);
-      padding: 12px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 20;
-    }
-    .app-header-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .logo-avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid var(--primary);
-      background: #F8F9FA;
-    }
-    .app-title {
-      font-size: 18px;
-      font-weight: 800;
-      color: var(--primary);
-      line-height: 1.1;
-    }
-    .app-subtitle {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-    .status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #10B981;
-      display: inline-block;
-    }
-    .icon-btn {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      border: none;
-      background: var(--surface-low);
-      color: var(--primary);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-    .icon-btn.orange {
-      color: #FC6018;
-      background: #FFDBCE;
-    }
-
-    .app-body {
-      flex: 1;
-      padding: 14px 16px 88px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      overflow-y: auto;
-    }
-    .offline-pill {
-      background: var(--surface-low);
-      padding: 8px 14px;
-      border-radius: 999px;
-      font-size: 11.5px;
-      font-weight: 700;
-      color: var(--primary);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .card {
-      background: var(--surface-card);
-      border-radius: 16px;
-      padding: 16px;
-      box-shadow: 0 4px 14px rgba(0, 68, 61, 0.05);
-      border: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .hero-logo-box {
-      background: #F8F9FA;
-      border-radius: 12px;
-      padding: 10px;
-      text-align: center;
-    }
-    .hero-logo-img {
-      width: 100%;
-      max-height: 190px;
-      object-fit: contain;
-      border-radius: 8px;
-    }
-    .btn-listen {
-      background: var(--surface-high);
-      color: var(--primary);
-      border: none;
-      padding: 7px 14px;
-      border-radius: 999px;
-      font-weight: 700;
-      font-size: 12px;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      cursor: pointer;
-    }
-    .lang-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-    .lang-btn {
-      padding: 12px;
-      border-radius: 12px;
-      border: none;
-      background: var(--surface-low);
-      color: var(--text-main);
-      text-align: left;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .lang-btn.active {
-      background: #00443D;
-      color: #FFFFFF;
-    }
-    .emergency-card {
-      background: linear-gradient(135deg, #7F000B, #BA1A1A);
-      color: #FFFFFF;
-      border-radius: 16px;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .voice-card {
-      background: linear-gradient(135deg, #A83900, #FC6018);
-      color: #FFFFFF;
-      border-radius: 16px;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .cta-white {
-      background: #FFFFFF;
-      color: #7F000B;
-      border: none;
-      padding: 13px;
-      border-radius: 10px;
-      font-weight: 800;
-      font-size: 14px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      text-decoration: none;
-    }
-    .cta-emerald {
-      background: #00443D;
-      color: #FFFFFF;
-      border: none;
-      padding: 13px;
-      border-radius: 10px;
-      font-weight: 800;
-      font-size: 14px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-    .metrics-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-    }
-    .metric-box {
-      background: var(--surface-low);
-      padding: 10px;
-      border-radius: 12px;
-    }
-    .metric-val {
-      font-size: 19px;
-      font-weight: 800;
-      color: var(--primary);
+    .iframe-container.loading {
+      opacity: 0.45;
     }
     .bottom-nav {
-      position: sticky;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: var(--surface-card);
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border-top: 1px solid var(--border);
       display: flex;
       justify-content: space-around;
-      padding: 8px 4px 10px;
-      z-index: 40;
+      align-items: center;
+      height: 68px;
+      padding: 6px 4px env(safe-area-inset-bottom, 8px);
+      z-index: 50;
+      flex-shrink: 0;
+      box-shadow: 0 -6px 20px rgba(19, 93, 84, 0.08);
+    }
+    body.dark-mode .bottom-nav {
+      background: rgba(24, 29, 32, 0.95);
     }
     .nav-item {
       border: none;
       background: none;
       color: var(--text-muted);
-      font-size: 10.5px;
+      font-size: 11px;
       font-weight: 700;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       gap: 3px;
       cursor: pointer;
-      padding: 4px 10px;
-      border-radius: 12px;
+      padding: 6px 12px;
+      border-radius: 14px;
+      transition: all 0.15s ease;
+      min-width: 60px;
+    }
+    .nav-item .material-symbols-outlined {
+      font-size: 23px;
     }
     .nav-item.active {
       color: var(--primary);
-      background: rgba(0, 68, 61, 0.1);
+      background: rgba(0, 68, 61, 0.10);
+    }
+    body.dark-mode .nav-item.active {
+      background: rgba(144, 211, 199, 0.15);
     }
     .toast {
       position: fixed;
-      bottom: 76px;
+      bottom: 82px;
       left: 50%;
       transform: translateX(-50%);
       background: #00443D;
       color: #FFFFFF;
       padding: 12px 18px;
-      border-radius: 12px;
+      border-radius: 14px;
       font-size: 13px;
       font-weight: 700;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      box-shadow: 0 12px 28px rgba(0, 32, 28, 0.30);
       display: none;
       z-index: 100;
-      max-width: 90vw;
+      max-width: min(430px, 92vw);
+      width: max-content;
       text-align: center;
+      line-height: 1.35;
     }
   </style>
 </head>
 <body>
 
-  <!-- Centered Mobile Viewport (Clean Prototype Interface) -->
   <main class="workspace">
     <div class="phone-frame">
-
-      <!-- Embedded Iframe for inspecting sub-screens & tabs -->
-      <iframe id="rawScreenIframe" class="iframe-container" title="Écran Petit Pas"></iframe>
-
-      <!-- Interactive App Mode -->
-      <div id="interactiveAppContainer" style="display:flex; flex-direction:column; flex:1; height:100%;">
-        <div class="app-header">
-          <div class="app-header-left">
-            <img src="public/assets/aistudio/photo_2026-11-20_10-56-50_12e72623.jpg" alt="Logo Petit Pas" class="logo-avatar" />
-            <div>
-              <div class="app-title" id="headerTitle">Petit Pas</div>
-              <div class="app-subtitle"><span class="status-dot"></span> Hors ligne OK • Mémoire locale</div>
-            </div>
-          </div>
-          <div style="display:flex; gap:6px; align-items:center;">
-            <button class="icon-btn" onclick="document.body.classList.toggle('dark-mode')" title="Mode Clair / Sombre">
-              <span class="material-symbols-outlined">dark_mode</span>
-            </button>
-            <button class="icon-btn orange" onclick="speakText('Bienvenue sur Petit Pas. Chaque petit pas compte. Le carnet de santé d\'Amel est à jour et sauvegardé sur votre téléphone.')" title="Assistance vocale">
-              <span class="material-symbols-outlined">record_voice_over</span>
-            </button>
-            <img src="public/assets/aistudio/avatar_patricia.png" alt="Profil Patricia K." class="logo-avatar" style="cursor:pointer;" onclick="loadHtmlScreen('public/assets/aistudio/code__11__692c0f67.html', 4)" title="Ouvrir le profil de Patricia K." />
-          </div>
-        </div>
-
-        <div class="app-body" id="tabContentArea">
-          <div class="offline-pill">
-            <span>● En ligne & Hors connexion : OK</span>
-            <span>AES-256 Local</span>
-          </div>
-
-          <!-- Official Logo Hero Card -->
-          <div class="card">
-            <div class="hero-logo-box">
-              <img src="public/assets/aistudio/photo_2026-11-20_10-56-50_12e72623.jpg" alt="Petit Pas - Chaque petit pas compte" class="hero-logo-img" />
-            </div>
-            <div style="display:flex; align-items:center; justify-content:space-between;">
-              <span style="font-size:12.5px; font-weight:700;">❤️ Bienvenue sur votre carnet bienveillant</span>
-              <button class="btn-listen" onclick="speakText('Bienvenue sur Petit Pas. Chaque petit pas compte. Votre carnet bienveillant fonctionne même sans réseau internet.')">
-                🔊 Écouter
-              </button>
-            </div>
-          </div>
-
-          <!-- Language Selector -->
-          <div class="card">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <strong style="font-size:14px;">🗣️ Langue parlée & instructions</strong>
-              <span style="font-size:11px; background:#FFDBCE; color:#A83900; padding:3px 8px; border-radius:999px; font-weight:700;">Audio direct</span>
-            </div>
-            <div class="lang-grid">
-              <button class="lang-btn active" onclick="selectLang(this, 'Français', 'Bienvenue sur Petit Pas. Votre carnet de santé est protégé hors-ligne.')">
-                <div><strong>Français</strong><br/><small>Voix active</small></div>
-                <span>🔊</span>
-              </button>
-              <button class="lang-btn" onclick="selectLang(this, 'Eʋegbe (Éwé)', 'Woezɔ ɖe Petit Pas dzi. Wò dɔwɔwɔa dze edzi nyuie le wò kaƒomɔ me !')">
-                <div><strong>Eʋegbe</strong><br/><small>Éwé</small></div>
-                <span>🔊</span>
-              </button>
-              <button class="lang-btn" onclick="selectLang(this, 'Kabɩyɛ (Kabyè)', 'CAKɩ Petit Pas yɔɔ. Amel kʊdɔŋ takayaɣ wɛ dedie.')">
-                <div><strong>Kabɩyɛ</strong><br/><small>Kabyè</small></div>
-                <span>🔊</span>
-              </button>
-              <button class="lang-btn" onclick="selectLang(this, 'English', 'Welcome to Petit Pas. Every little step counts.')">
-                <div><strong>English</strong><br/><small>Audio guide</small></div>
-                <span>🔊</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Active Child Summary Card (Amel K.) -->
-          <div class="card">
-            <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
-              <div style="display:flex; align-items:center; gap:12px;">
-                <img src="public/assets/aistudio/avatar_amel.png" alt="Amel K." style="width:56px; height:56px; border-radius:50%; object-fit:cover; border:2px solid var(--primary);" />
-                <div>
-                  <span style="font-size:11px; font-weight:800; color:var(--primary);">PASSEPORT PÉDIATRIQUE • PEV À JOUR</span>
-                  <h3 style="font-size:18px; font-weight:800;">Amel K. (8 mois • Fille)</h3>
-                  <p style="font-size:12px; color:var(--text-muted);">Mère : Patricia K. • Tokoin-Solidarité, Lomé</p>
-                </div>
-              </div>
-              <button class="icon-btn orange" onclick="speakText('Carnet de santé d\'Amel K., 8 mois. Poids 7 virgule 85 kilos, normal sur la courbe OMS. 4 vaccins sur 5 reçus.')">
-                <span class="material-symbols-outlined">volume_up</span>
-              </button>
-            </div>
-            <div class="metrics-grid">
-              <div class="metric-box">
-                <small style="font-size:11px; color:var(--text-muted);">Poids OMS</small>
-                <div class="metric-val">7,85 kg</div>
-                <small style="font-size:10px; color:#10B981; font-weight:700;">+320g • P50</small>
-              </div>
-              <div class="metric-box">
-                <small style="font-size:11px; color:var(--text-muted);">Taille</small>
-                <div class="metric-val">68 cm</div>
-                <small style="font-size:10px; color:var(--primary); font-weight:700;">Normal P52</small>
-              </div>
-              <div class="metric-box">
-                <small style="font-size:11px; color:var(--text-muted);">Vaccins PEV</small>
-                <div class="metric-val">4/5</div>
-                <small style="font-size:10px; color:#A83900; font-weight:700;">80% reçus</small>
-              </div>
-            </div>
-            <button class="cta-emerald" onclick="loadHtmlScreen('public/assets/aistudio/code__13__e9c1e6f0.html', 1)">
-              📖 Ouvrir le Carnet de Santé & Conseils Dr. Akouavi
-            </button>
-          </div>
-
-          <!-- Urgence Pédiatrique 118 -->
-          <div class="emergency-card">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <div>
-                <h3 style="font-size:17px; font-weight:800;">🚨 Urgence Pédiatrique 118</h3>
-                <small style="font-weight:700; opacity:0.9;">SAMU TOGO • GRATUIT 24H/24 SANS INTERNET</small>
-              </div>
-              <button class="icon-btn" style="background:rgba(255,255,255,0.2); color:#FFF;" onclick="speakText('Urgence Pédiatrique 118. Appel téléphonique direct GSM sans internet en cas de convulsion, détresse respiratoire ou fièvre très élevée.')">
-                <span class="material-symbols-outlined">volume_up</span>
-              </button>
-            </div>
-            <p style="font-size:12.5px; line-height:1.45;">
-              Appel téléphonique direct GSM sans internet. En cas de convulsion, détresse respiratoire ou fièvre &gt; 38,5°C.
-            </p>
-            <button class="cta-white" onclick="loadHtmlScreen('public/assets/aistudio/code__6__79af7070.html', 0)">
-              📞 Appeler le 118 / Ouvrir Alerte Signes de Danger
-            </button>
-          </div>
-
-          <!-- Raconter ce qui arrive à bébé -->
-          <div class="voice-card">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <div>
-                <h3 style="font-size:17px; font-weight:800;">🎙️ Raconter ce qui arrive à bébé</h3>
-                <small style="font-weight:700; opacity:0.95;">Étape 1 sur 3 • Guidage vocal bienveillant</small>
-              </div>
-            </div>
-            <p style="font-size:12.5px; line-height:1.45;">
-              Dictez ce qui vous inquiète (toux, pleurs, selle liquide) en Français, Éwé ou Kabyè pour préparer la consultation CMS.
-            </p>
-            <button class="cta-white" style="color:#A83900;" onclick="loadHtmlScreen('public/assets/aistudio/code__2__76f63ec3.html', 0)">
-              🎤 Écouter la Confirmation Vocale Éwé (Nyasia dze edzi nyuie)
-            </button>
-          </div>
-
-          <!-- CMS Adidogomé Card -->
-          <div class="card">
-            <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
-              <div style="display:flex; align-items:center; gap:10px;">
-                <img src="public/assets/aistudio/avatar_dr_akouavi.png" alt="Dr. Akouavi Mensah" style="width:48px; height:48px; border-radius:50%; object-fit:cover; border:2px solid var(--primary);" />
-                <div>
-                  <h3 style="font-size:16px; font-weight:800; color:var(--primary);">🏥 CMS Adidogomé ● Ouvert 24h/24</h3>
-                  <p style="font-size:12px; color:var(--text-muted);">450 m • Soignante : <strong>Dr. Akouavi Mensah</strong></p>
-                </div>
-              </div>
-            </div>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-              <button class="cta-emerald" onclick="loadHtmlScreen('public/assets/aistudio/code__9__7e6e9f04.html', 2)">
-                🩺 Mémo Dr. Akouavi
-              </button>
-              <button class="cta-emerald" style="background:#135D54;" onclick="loadHtmlScreen('public/assets/aistudio/code_6e70f2e4.html', 3)">
-                📡 Partage QR & PDF
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- Embedded Screen Viewport -->
+      <iframe
+        id="rawScreenIframe"
+        class="iframe-container"
+        src="public/assets/aistudio/code__4__5e110feb.html"
+        title="Petit Pas — Passeport Santé Maternelle & Infantile"
+      ></iframe>
 
       <!-- Persistent Bottom Navigation Bar -->
-      <nav class="bottom-nav">
-        <button class="nav-item active" onclick="loadHtmlScreen('interactive', 0)">
+      <nav class="bottom-nav" aria-label="Navigation principale Petit Pas">
+        <button class="nav-item active" onclick="loadHtmlScreen('public/assets/aistudio/code__4__5e110feb.html', 0)">
           <span class="material-symbols-outlined">home</span>
           <span>Accueil</span>
         </button>
         <button class="nav-item" onclick="loadHtmlScreen('public/assets/aistudio/code__13__e9c1e6f0.html', 1)">
-          <span class="material-symbols-outlined">medical_services</span>
+          <span class="material-symbols-outlined">stethoscope</span>
           <span>Suivi santé</span>
         </button>
         <button class="nav-item" onclick="loadHtmlScreen('public/assets/aistudio/code__9__7e6e9f04.html', 2)">
           <span class="material-symbols-outlined">wb_sunny</span>
           <span>Éveil</span>
         </button>
-        <button class="nav-item" onclick="loadHtmlScreen('public/assets/aistudio/code_6e70f2e4.html', 3)">
+        <button class="nav-item" onclick="loadHtmlScreen('public/assets/aistudio/code__1__92c950e2.html', 3)">
           <span class="material-symbols-outlined">local_hospital</span>
           <span>Soignants</span>
         </button>
@@ -544,68 +212,665 @@
           <span>Mon Espace</span>
         </button>
       </nav>
-
     </div>
   </main>
 
-  <div id="toastBanner" class="toast"></div>
+  <div id="toastBanner" class="toast" role="status" aria-live="polite"></div>
 
   <script>
+    const SCREENS = {
+      HOME: 'public/assets/aistudio/code__4__5e110feb.html',
+      HOME_COMPACT: 'public/assets/aistudio/code_6e70f2e4.html',
+      CARNET: 'public/assets/aistudio/code__13__e9c1e6f0.html',
+      EVEIL_MEMO: 'public/assets/aistudio/code__9__7e6e9f04.html',
+      SOIGNANTS_CMS: 'public/assets/aistudio/code__1__92c950e2.html',
+      MON_ESPACE: 'public/assets/aistudio/code__11__692c0f67.html',
+      MON_ESPACE_ALT: 'public/assets/aistudio/code__15__6720314b.html',
+      AUDIO_EWE: 'public/assets/aistudio/code__2__76f63ec3.html',
+      URGENCE_118: 'public/assets/aistudio/code__6__79af7070.html',
+      PASSEPORT_A4: 'public/assets/aistudio/code__17__d6ac0a83.html'
+    };
+
+    const navHistory = [{ path: SCREENS.HOME, navIndex: 0 }];
+    let toastTimeout = null;
+    let isDarkMode = localStorage.getItem('petitpas_dark') === '1';
+    if (isDarkMode) document.body.classList.add('dark-mode');
+
+    const QUIZ_QUESTIONS = [
+      {
+        step: '1 / 4',
+        fr: "1. L'enfant sourit-il ou regarde-t-il votre visage quand vous lui parlez ?",
+        local: "🔊 Eʋegbe : Đe ɖevia kona alo kpɔa wò ŋkume ne èle nu ƒom nɛa ?"
+      },
+      {
+        step: '2 / 4',
+        fr: "2. L'enfant tient-il bien sa tête ou s'assoit-il avec un léger appui ?",
+        local: "🔊 Eʋegbe : Đe ɖevia tea ŋu léa eƒe ta alo bɔbɔa nɔa anyi nyuiea ?"
+      },
+      {
+        step: '3 / 4',
+        fr: "3. L'enfant tourne-t-il la tête vers un bruit, une voix ou une chanson ?",
+        local: "🔊 Kabɩyɛ : Pɩɣa cɔʊ kɛ-ñʊʊ lɛɣtʊ yɔɔ ɛzɩ паyɑʊ yɔ ?"
+      },
+      {
+        step: '4 / 4',
+        fr: "4. L'enfant attrape-t-il un objet simple posé devant lui avec ses mains ?",
+        local: "🔊 Eʋegbe : Đe ɖevia tea ŋutsɔa nu si le eŋgɔ kple eƒe asiwoa ?"
+      }
+    ];
+    let currentQuizIndex = 0;
+    let currentQuizAnswer = 'Oui, souvent';
+    let selectedChildName = 'Amel K. (8 mois)';
+
     function showToast(msg) {
       const t = document.getElementById('toastBanner');
       t.textContent = msg;
       t.style.display = 'block';
-      setTimeout(() => { t.style.display = 'none'; }, 3500);
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => { t.style.display = 'none'; }, 4200);
     }
 
-    function speakText(text) {
-      showToast('🔊 ' + text.slice(0, 75) + '...');
+    function speakText(text, rate = 0.9) {
+      showToast('🔊 ' + (text.length > 96 ? text.slice(0, 96) + '…' : text));
       if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        const u = new SpeechSynthesisUtterance(text);
-        u.lang = 'fr-FR';
-        u.rate = 0.9;
-        window.speechSynthesis.speak(u);
+        try {
+          window.speechSynthesis.cancel();
+          const u = new SpeechSynthesisUtterance(text);
+          u.lang = 'fr-FR';
+          u.rate = rate;
+          window.speechSynthesis.speak(u);
+        } catch (e) {}
       }
     }
 
-    function selectLang(btn, langName, sampleText) {
-      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      speakText(sampleText);
+    // Generate and trigger a real browser PDF download + immediate confirmation
+    function triggerCmsPdfDownload(doc, triggerBtn) {
+      const childLabel = localStorage.getItem('petitpas_child') || selectedChildName || 'Amel K. (8 mois)';
+      const roleLabel = localStorage.getItem('petitpas_role') || 'Parent / Famille';
+      const symptomNote = localStorage.getItem('petitpas_symptom') || 'Suivi croissance & hydratation SRO';
+      const pdfContent = [
+        '%PDF-1.4',
+        '1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj',
+        '2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj',
+        '3 0 obj << /Type /Page /Parent 2 0 R /Resources << /Font << /F1 4 0 R >> >> /MediaBox [0 0 595 842] /Contents 5 0 R >> endobj',
+        '4 0 obj << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> endobj',
+        '5 0 obj << /Length 420 >> stream',
+        'BT /F1 16 Tf 50 780 Td (PETIT PAS - FICHE DE CONSULTATION CMS (TOGO)) Tj',
+        '/F1 11 Tf 0 -24 Td (Chaque petit pas compte. | Outil d accompagnement - Pas un diagnostic) Tj',
+        '0 -28 Td (Enfant suivi : ' + childLabel.replace(/[()]/g, '') + ' | Profil : ' + roleLabel + ') Tj',
+        '0 -20 Td (Centre : CMS Adidogome (Lome) - Sage-femme : Dr. Akouavi Mensah) Tj',
+        '0 -20 Td (Poids : 7.85 kg (+320g OMS p50) | Taille : 68 cm | P. Cranien : 44 cm) Tj',
+        '0 -20 Td (Calendrier PEV Togo : 4/5 Recus (80%) - Pentavalent 2 & Polio 2 OK) Tj',
+        '0 -20 Td (Observation / Symptome : ' + symptomNote.replace(/[()]/g, '') + ') Tj',
+        '0 -20 Td (Questionnaire Eveil : Reponse enregistree (' + currentQuizAnswer + ')) Tj',
+        'ET endstream endobj',
+        'xref',
+        '0 6',
+        '0000000000 65535 f ',
+        '0000000009 00000 n ',
+        '0000000058 00000 n ',
+        '0000000115 00000 n ',
+        '0000000229 00000 n ',
+        '0000000297 00000 n ',
+        'trailer << /Size 6 /Root 1 0 R >>',
+        'startxref',
+        '768',
+        '%%EOF'
+      ].join('\n');
+
+      try {
+        const blob = new Blob([pdfContent], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Fiche_Consultation_CMS_Petit_Pas.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 3000);
+      } catch (err) {}
+
+      // Show immediate visible confirmation in the screen DOM
+      if (doc) {
+        const existingBox = doc.getElementById('pdf-cms-confirmation-box');
+        if (existingBox) {
+          existingBox.classList.remove('hidden');
+        }
+        if (triggerBtn && triggerBtn.parentElement) {
+          let inlineBanner = triggerBtn.parentElement.querySelector('.pdf-inline-confirm');
+          if (!inlineBanner && !existingBox) {
+            inlineBanner = doc.createElement('div');
+            inlineBanner.className = 'pdf-inline-confirm mt-2 bg-primary-fixed text-on-primary-fixed border-2 border-primary rounded-xl p-3 flex items-center gap-2 shadow-sm';
+            inlineBanner.innerHTML = '<span class="material-symbols-outlined text-primary text-[22px]">check_circle</span><span class="font-bold text-[13px] leading-snug">La fiche de consultation CMS a bien été téléchargée</span>';
+            triggerBtn.parentElement.appendChild(inlineBanner);
+          }
+        }
+      }
+
+      showToast('✓ La fiche de consultation CMS a bien été téléchargée');
+      if ('speechSynthesis' in window) {
+        try {
+          window.speechSynthesis.cancel();
+          const u = new SpeechSynthesisUtterance('La fiche de consultation CMS a bien été téléchargée.');
+          u.lang = 'fr-FR';
+          u.rate = 0.9;
+          window.speechSynthesis.speak(u);
+        } catch (e) {}
+      }
     }
 
-    function loadHtmlScreen(path, navIndex) {
+    function updateActiveNav(navIndex) {
       const navItems = document.querySelectorAll('.bottom-nav .nav-item');
       if (typeof navIndex === 'number' && navItems[navIndex]) {
         navItems.forEach(n => n.classList.remove('active'));
         navItems[navIndex].classList.add('active');
       }
+    }
+
+    function inferNavIndex(path) {
+      if (path.includes('code__4__') || path.includes('code_6e70')) return 0;
+      if (path.includes('code__13__') || path.includes('code__17__')) return 1;
+      if (path.includes('code__9__')) return 2;
+      if (path.includes('code__1__') || path.includes('code__2__') || path.includes('code__6__')) return 3;
+      if (path.includes('code__11__') || path.includes('code__15__')) return 4;
+      return 0;
+    }
+
+    function loadHtmlScreen(path, navIndex, pushHistory = true) {
+      if (path === 'interactive') path = SCREENS.HOME;
+      const resolvedIndex = typeof navIndex === 'number' ? navIndex : inferNavIndex(path);
+      updateActiveNav(resolvedIndex);
+
+      if (pushHistory) {
+        const current = navHistory[navHistory.length - 1];
+        if (!current || current.path !== path) {
+          navHistory.push({ path, navIndex: resolvedIndex });
+        }
+      }
+
       const iframe = document.getElementById('rawScreenIframe');
-      const interactive = document.getElementById('interactiveAppContainer');
-      if (path === 'interactive') {
-        iframe.classList.remove('active');
-        interactive.style.display = 'flex';
+      iframe.classList.add('loading');
+      iframe.src = path;
+    }
+
+    function navigateBack() {
+      if (navHistory.length > 1) {
+        navHistory.pop();
+        const prev = navHistory[navHistory.length - 1];
+        loadHtmlScreen(prev.path, prev.navIndex, false);
       } else {
-        interactive.style.display = 'none';
-        iframe.src = path;
-        iframe.classList.add('active');
-        iframe.onload = function() {
-          try {
-            const win = iframe.contentWindow;
-            const doc = iframe.contentDocument || win.document;
-            if (win && win.history) {
-              win.history.back = function() {
-                loadHtmlScreen('interactive', 0);
-              };
-            }
-            // Hide duplicate bottom nav inside sub-screen iframe if present so only persistent bottom-nav shows
-            const innerNavs = doc.querySelectorAll('nav.fixed.bottom-0');
-            innerNavs.forEach(n => { n.style.display = 'none'; });
-          } catch (e) {}
-        };
+        loadHtmlScreen(SCREENS.HOME, 0, false);
       }
     }
+
+    // Apply dark/light mode & update sun/moon icon inside iframe
+    function syncIframeTheme(doc) {
+      if (!doc || !doc.documentElement) return;
+      doc.documentElement.classList.toggle('dark', isDarkMode);
+
+      // Inject high-contrast dark mode styles once per iframe document
+      if (!doc.getElementById('petitpas-dark-contrast-style')) {
+        const styleEl = doc.createElement('style');
+        styleEl.id = 'petitpas-dark-contrast-style';
+        styleEl.textContent = `
+          html.dark body, html.dark main { background-color: #0F1417 !important; color: #E8EEF2 !important; }
+          html.dark header { background-color: rgba(15, 20, 23, 0.92) !important; border-bottom: 1px solid rgba(144, 211, 199, 0.18) !important; }
+          html.dark .bg-surface { background-color: #0F1417 !important; }
+          html.dark .bg-surface-container-lowest { background-color: #182024 !important; color: #E8EEF2 !important; }
+          html.dark .bg-surface-container-low { background-color: #1E282D !important; color: #E8EEF2 !important; }
+          html.dark .bg-surface-container-high, html.dark .bg-surface-container-highest { background-color: #263238 !important; color: #E8EEF2 !important; }
+          html.dark .text-on-surface { color: #E8EEF2 !important; }
+          html.dark .text-on-surface-variant { color: #B8C7C5 !important; }
+          html.dark .text-primary { color: #82E6D8 !important; }
+          html.dark input, html.dark select { background-color: #131A1D !important; color: #FFFFFF !important; border-color: #2E3D44 !important; }
+        `;
+        doc.head.appendChild(styleEl);
+      }
+
+      // Update sun / moon icon text
+      doc.querySelectorAll('button[aria-label*="thème"], button[aria-label*="sombre"], #theme-toggle').forEach(btn => {
+        const iconSpan = btn.querySelector('.material-symbols-outlined');
+        if (iconSpan) {
+          iconSpan.textContent = isDarkMode ? 'light_mode' : 'dark_mode';
+        }
+      });
+
+      // Ensure official logo image is always free of any circular frame or border and on crisp high-contrast background
+      doc.querySelectorAll('img[src*="photo_2026-11-20_10-56-50_12e72623.jpg"]').forEach(img => {
+        img.style.borderRadius = '0';
+        img.style.border = 'none';
+        img.style.boxShadow = 'none';
+        if (img.parentElement) {
+          img.parentElement.style.backgroundColor = '#F8F9FA';
+          img.parentElement.style.borderRadius = '10px';
+          img.parentElement.style.padding = '8px';
+        }
+      });
+    }
+
+    // Wire up every interactive button & link inside the loaded screen
+    function enhanceIframeDocument(iframe) {
+      try {
+        const win = iframe.contentWindow;
+        const doc = iframe.contentDocument || win.document;
+        if (!doc || !doc.body) return;
+
+        // 1. Sync dark mode state & logo contrast
+        syncIframeTheme(doc);
+
+        // 2. Override history.back() inside iframe to use prototype stack
+        if (win && win.history) {
+          win.history.back = function() {
+            navigateBack();
+          };
+        }
+
+        // 3. Hide duplicate inner bottom navs so only the persistent shell nav is shown
+        doc.querySelectorAll('nav.fixed.bottom-0').forEach(n => {
+          n.style.display = 'none';
+        });
+
+        // 4. Intercept theme toggle buttons (Sun / Moon) inside iframe so dark mode persists across screens
+        doc.querySelectorAll('button[aria-label*="thème"], button[aria-label*="sombre"], #theme-toggle').forEach(btn => {
+          btn.onclick = function(e) {
+            e.preventDefault();
+            isDarkMode = !isDarkMode;
+            localStorage.setItem('petitpas_dark', isDarkMode ? '1' : '0');
+            document.body.classList.toggle('dark-mode', isDarkMode);
+            syncIframeTheme(doc);
+            showToast(isDarkMode ? '🌙 Mode sombre activé (Contraste élevé)' : '☀️ Mode clair activé');
+          };
+        });
+
+        // 5. Ensure 3-bar hamburger menu works on ALL screens (opens Éwé, Kabiyè, Français, Anglais drawer)
+        doc.querySelectorAll('button[aria-label*="Menu"], #btn-hamburger-lang').forEach(menuBtn => {
+          menuBtn.onclick = function(e) {
+            e.preventDefault();
+            let drawer = doc.getElementById('drawer-languages');
+            if (!drawer && doc.querySelector('header')) {
+              drawer = doc.createElement('div');
+              drawer.id = 'drawer-languages';
+              drawer.className = 'bg-surface-container-lowest border-t border-outline-variant/30 shadow-xl px-4 py-3 transition-all';
+              drawer.innerHTML = `
+                <div class="flex items-center justify-between pb-2 border-b border-surface-container-high">
+                  <div class="flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-primary text-[20px]">translate</span>
+                    <span class="font-bold text-[13px] text-primary">Choisir la langue (Éwé, Kabiyè, Français, Anglais)</span>
+                  </div>
+                </div>
+                <div class="grid grid-cols-2 gap-2 pt-2">
+                  <button type="button" data-lang="ewe" class="h-12 px-3 rounded-lg flex items-center justify-between bg-surface-container-high text-on-surface text-left font-bold text-[13px]"><span>Eʋegbe (Éwé)</span><span class="material-symbols-outlined text-secondary text-[20px]">volume_up</span></button>
+                  <button type="button" data-lang="kabiye" class="h-12 px-3 rounded-lg flex items-center justify-between bg-surface-container-high text-on-surface text-left font-bold text-[13px]"><span>Kabɩyɛ (Kabiyè)</span><span class="material-symbols-outlined text-secondary text-[20px]">volume_up</span></button>
+                  <button type="button" data-lang="fr" class="h-12 px-3 rounded-lg flex items-center justify-between bg-primary text-on-primary text-left font-bold text-[13px]"><span>Français</span><span class="material-symbols-outlined text-[20px]">volume_up</span></button>
+                  <button type="button" data-lang="en" class="h-12 px-3 rounded-lg flex items-center justify-between bg-surface-container-high text-on-surface text-left font-bold text-[13px]"><span>English (Anglais)</span><span class="material-symbols-outlined text-secondary text-[20px]">volume_up</span></button>
+                </div>
+              `;
+              doc.querySelector('header').appendChild(drawer);
+              drawer.querySelectorAll('button[data-lang]').forEach(b => {
+                b.addEventListener('click', () => {
+                  const l = b.dataset.lang;
+                  if (l === 'ewe') speakText('Woezɔ ɖe Petit Pas dzi. Wò dɔwɔwɔa dze edzi nyuie !', 0.85);
+                  if (l === 'kabiye') speakText('CAKɩ Petit Pas yɔɔ. Amel kʊdɔŋ takayaɣ wɛ dedie.', 0.85);
+                  if (l === 'fr') speakText('Voix française activée. En ligne et hors connexion OK.', 0.9);
+                  if (l === 'en') speakText('English voice active. Every little step counts.', 0.9);
+                });
+              });
+            } else if (drawer) {
+              drawer.classList.toggle('hidden');
+            }
+          };
+        });
+
+        // 6. Interactive 4-option Milestone Questionnaire (« Oui, souvent », « Parfois », « Pas encore », « Je ne sais pas » + « Suivant »)
+        const quizGrid = doc.getElementById('quiz-options-grid');
+        const quizNextBtn = doc.getElementById('btn-quiz-next');
+        const quizListenBtn = doc.getElementById('btn-listen-quiz');
+        const quizStepBadge = doc.getElementById('quiz-step-badge');
+        const quizQuestionFr = doc.getElementById('quiz-question-fr');
+        const quizQuestionLocal = doc.getElementById('quiz-question-local');
+        const quizFeedback = doc.getElementById('quiz-feedback-banner');
+
+        if (quizGrid) {
+          const optButtons = quizGrid.querySelectorAll('.quiz-opt-btn');
+          optButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+              optButtons.forEach(b => {
+                b.className = 'quiz-opt-btn min-h-[60px] p-space-sm rounded-xl border border-surface-container-high bg-surface-container-low hover:bg-surface-container-high text-on-surface flex items-center justify-between gap-1.5 text-left transition-transform active:scale-95';
+              });
+              btn.className = 'quiz-opt-btn min-h-[60px] p-space-sm rounded-xl border-2 border-primary bg-primary text-on-primary flex items-center justify-between gap-1.5 text-left shadow-sm transition-transform active:scale-95';
+              currentQuizAnswer = btn.dataset.answer || btn.textContent.trim();
+              if (quizFeedback) {
+                quizFeedback.textContent = '✓ Réponse choisie : « ' + currentQuizAnswer + ' » • Appuyez sur Suivant pour continuer';
+              }
+              speakText('Réponse sélectionnée : ' + currentQuizAnswer);
+            });
+          });
+        }
+
+        if (quizListenBtn) {
+          quizListenBtn.addEventListener('click', () => {
+            const q = QUIZ_QUESTIONS[currentQuizIndex] || QUIZ_QUESTIONS[0];
+            speakText(q.fr + ' Réponses possibles : Oui souvent, Parfois, Pas encore, ou Je ne sais pas.');
+          });
+        }
+
+        if (quizNextBtn) {
+          quizNextBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            currentQuizIndex = (currentQuizIndex + 1) % QUIZ_QUESTIONS.length;
+            const nextQ = QUIZ_QUESTIONS[currentQuizIndex];
+            if (quizStepBadge) quizStepBadge.textContent = nextQ.step;
+            if (quizQuestionFr) quizQuestionFr.textContent = nextQ.fr;
+            if (quizQuestionLocal) quizQuestionLocal.textContent = nextQ.local;
+            if (quizFeedback) {
+              quizFeedback.textContent = '✓ Étape enregistrée (' + currentQuizAnswer + ') • Question ' + nextQ.step;
+            }
+            speakText('Question suivante : ' + nextQ.fr);
+          });
+        }
+
+        // 7. Profile avatar in top bar -> open Mon Espace & Profil
+        doc.querySelectorAll('[data-profile-avatar="true"], button[aria-label="Mon Profil"]').forEach(el => {
+          el.style.cursor = 'pointer';
+          el.onclick = function(e) {
+            e.preventDefault();
+            loadHtmlScreen(SCREENS.MON_ESPACE, 4);
+          };
+        });
+
+        // 8. Back arrow links (<a aria-label*="Retour">)
+        doc.querySelectorAll('a[aria-label*="Retour"], button[aria-label*="Retour"]').forEach(el => {
+          el.onclick = function(e) {
+            e.preventDefault();
+            navigateBack();
+          };
+        });
+
+        // 9. Registration Role Selector cards (Parent, Docteur, Pharmacien, Orphelinat / Encadrant) + Multi-child panel
+        const roleContainer = doc.getElementById('registration-role-selector');
+        const activeRoleBadge = doc.getElementById('active-role-badge');
+        const orphanagePanel = doc.getElementById('orphanage-multi-children-panel');
+        if (roleContainer) {
+          const roleBtns = roleContainer.querySelectorAll('button');
+          roleBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+              roleBtns.forEach(b => {
+                b.className = 'p-space-sm rounded-xl border border-surface-container-high bg-surface-container-low hover:bg-surface-container-high text-on-surface flex flex-col items-start gap-1 text-left transition-transform active:scale-95';
+                const icons = b.querySelectorAll('.material-symbols-outlined');
+                if (icons[0]) icons[0].className = 'material-symbols-outlined text-primary text-[26px]';
+                if (icons[1]) {
+                  icons[1].textContent = 'volume_up';
+                  icons[1].className = 'material-symbols-outlined text-secondary text-[18px]';
+                }
+              });
+              btn.className = 'p-space-sm rounded-xl border-2 border-primary bg-primary text-on-primary flex flex-col items-start gap-1 text-left shadow-sm transition-transform active:scale-95';
+              const activeIcons = btn.querySelectorAll('.material-symbols-outlined');
+              if (activeIcons[0]) activeIcons[0].className = 'material-symbols-outlined text-[26px]';
+              if (activeIcons[1]) {
+                activeIcons[1].textContent = 'check_circle';
+                activeIcons[1].className = 'material-symbols-outlined text-[18px]';
+              }
+              const roleTitle = btn.querySelector('.font-label-md')?.textContent?.trim() || 'Parent / Famille';
+              localStorage.setItem('petitpas_role', roleTitle);
+              if (activeRoleBadge) {
+                activeRoleBadge.textContent = 'Profil : ' + roleTitle;
+              }
+              if (orphanagePanel) {
+                orphanagePanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+              }
+              speakText('Profil actif : ' + roleTitle);
+            });
+          });
+        }
+
+        // Multi-children selection & add child in Orphanage / Encadrant panel
+        const multiChildrenList = doc.getElementById('multi-children-list');
+        const addChildBtn = doc.getElementById('btn-add-orphanage-child');
+        const multiChildCount = doc.getElementById('multi-child-count');
+        if (multiChildrenList) {
+          const bindChildButtons = () => {
+            const childBtns = multiChildrenList.querySelectorAll('.child-select-btn');
+            childBtns.forEach(btn => {
+              btn.onclick = () => {
+                childBtns.forEach(b => {
+                  b.className = 'child-select-btn p-2.5 rounded-lg bg-surface-container-lowest border border-surface-container-high text-on-surface flex items-center justify-between text-left active:scale-95';
+                });
+                btn.className = 'child-select-btn p-2.5 rounded-lg bg-primary text-on-primary flex items-center justify-between text-left shadow-sm active:scale-95';
+                selectedChildName = btn.dataset.child || btn.textContent.trim();
+                localStorage.setItem('petitpas_child', selectedChildName);
+                speakText('Dossier enfant sélectionné : ' + selectedChildName);
+              };
+            });
+          };
+          bindChildButtons();
+
+          if (addChildBtn) {
+            addChildBtn.onclick = () => {
+              const count = multiChildrenList.querySelectorAll('.child-select-btn').length + 1;
+              const newChild = doc.createElement('button');
+              newChild.type = 'button';
+              newChild.dataset.child = 'Yao B. (11 mois)';
+              newChild.className = 'child-select-btn p-2.5 rounded-lg bg-surface-container-lowest border border-surface-container-high text-on-surface flex items-center justify-between text-left active:scale-95';
+              newChild.innerHTML = `
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-primary text-[20px]">child_care</span>
+                  <div>
+                    <div class="font-label-md text-label-md font-bold leading-tight">Yao B. • 11 mois (Garçon)</div>
+                    <div class="font-label-sm text-label-sm text-on-surface-variant">Nouveau carnet ajouté • PEV à jour</div>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+              `;
+              multiChildrenList.appendChild(newChild);
+              if (multiChildCount) multiChildCount.textContent = count + ' enfants suivis';
+              bindChildButtons();
+              newChild.click();
+            };
+          }
+        }
+
+        // 10. Quick Symptom Chips (« Corps chaud / Fièvre », « Selle liquide », « Toux / Souffle », « Refus de boire »)
+        const symptomInput = doc.getElementById('symptom-text-input');
+        doc.querySelectorAll('.symptom-chip').forEach(chip => {
+          chip.addEventListener('click', () => {
+            const sym = chip.dataset.symptom || chip.textContent.trim();
+            if (symptomInput) {
+              symptomInput.value = sym + ' constaté chez l\'enfant';
+            }
+            localStorage.setItem('petitpas_symptom', sym);
+            speakText('Symptôme indiqué : ' + sym + '. Donnez à boire par petites gorgées et consultez le CMS ou la pharmacie proche.');
+          });
+        });
+
+        // 11. Itinerary buttons for CMS & nearby/distant Pharmacies
+        doc.querySelectorAll('.btn-itineraire').forEach(btn => {
+          btn.onclick = function(e) {
+            e.preventDefault();
+            const place = btn.dataset.place || 'CMS Adidogomé / Pharmacie de garde';
+            speakText('Itinéraire hors-ligne activé vers : ' + place + '. Suivez la direction indiquée.');
+          };
+        });
+
+        // 12. Voice dictation mic button for Name input
+        const nameMicBtn = doc.querySelector('button[aria-label="Dicter vocalement mon nom"]');
+        const nameInput = doc.querySelector('input[aria-label="Mon prénom ou surnom"]');
+        if (nameMicBtn && nameInput) {
+          nameMicBtn.addEventListener('click', () => {
+            showToast('🎙️ Écoute vocale en cours…');
+            setTimeout(() => {
+              nameInput.value = 'Patricia K. (Maman Amel)';
+              speakText('Nom enregistré par la voix : Patricia K., maman d\'Amel.');
+            }, 700);
+          });
+        }
+
+        // 13. Wire up buttons and links by semantic label/text
+        doc.querySelectorAll('button, a').forEach(el => {
+          const text = (el.textContent || '').replace(/\s+/g, ' ').trim();
+          const aria = (el.getAttribute('aria-label') || '').trim();
+
+          // Direct PDF CMS Export & Download with immediate confirmation
+          if (el.id === 'btn-export-pdf-cms-home' ||
+              text.includes('Télécharger / Exporter en PDF la fiche CMS') ||
+              text.includes('Télécharger / Exporter la fiche en PDF') ||
+              text.includes('Exporter en PDF pour la consultation CMS') ||
+              text.includes('Télécharger le PDF Officiel')) {
+            el.onclick = function(e) {
+              e.preventDefault();
+              triggerCmsPdfDownload(doc, el);
+            };
+          }
+          // Anonymous mode toggle
+          else if (text.includes('Continuer sans numéro (Mode 100% Anonyme)')) {
+            el.onclick = function(e) {
+              e.preventDefault();
+              const telInput = doc.querySelector('input[type="tel"]');
+              if (telInput) telInput.value = 'Mode 100% Anonyme (Local)';
+              speakText('Mode cent pour cent anonyme activé. Aucun numéro de téléphone requis.');
+            };
+          }
+          // Validate registration
+          else if (text.includes('Valider mon enregistrement')) {
+            el.onclick = function(e) {
+              e.preventDefault();
+              const enteredName = nameInput?.value?.trim() || 'Patricia K.';
+              localStorage.setItem('petitpas_name', enteredName);
+              speakText('Nyasia dze edzi nyuie ! Votre carnet Petit Pas est enregistré en mémoire locale pour ' + enteredName + '.');
+              setTimeout(() => loadHtmlScreen(SCREENS.AUDIO_EWE, 3), 500);
+            };
+          }
+          // Already registered -> open health carnet
+          else if (text.includes('Déjà enregistré ? Accéder à mon carnet direct') ||
+                   text.includes('Ouvrir mon carnet de santé') ||
+                   text.includes('Retourner au carnet de santé') ||
+                   text.includes("Ouvrir le carnet de santé d'Amel")) {
+            el.onclick = function(e) {
+              e.preventDefault();
+              loadHtmlScreen(SCREENS.CARNET, 1);
+            };
+          }
+          // Emergency 118 call screen
+          else if (text.includes('Appeler le 118 Immédiatement') || el.getAttribute('href') === 'tel:118') {
+            el.onclick = function(e) {
+              e.preventDefault();
+              speakText('Liaison directe GSM avec le médecin régulateur SAMU 118 en cours.');
+              loadHtmlScreen(SCREENS.URGENCE_118, 3);
+            };
+          }
+          // Hang up 118 call or Return Home
+          else if (text.includes('Raccrocher') || text.includes("Retourner à l'accueil Petit Pas")) {
+            el.onclick = function(e) {
+              e.preventDefault();
+              loadHtmlScreen(SCREENS.HOME, 0);
+            };
+          }
+          // Confirm symptoms / Audio Confirmation Ewe
+          else if (text.includes('Étape suivante : Confirmer les symptômes') ||
+                   (el.id !== 'btn-quiz-next' && (text === 'Suivant arrow_forward' || text === 'Suivant'))) {
+            el.onclick = function(e) {
+              e.preventDefault();
+              if (symptomInput && symptomInput.value.trim()) {
+                localStorage.setItem('petitpas_symptom', symptomInput.value.trim());
+              }
+              loadHtmlScreen(SCREENS.AUDIO_EWE, 3);
+            };
+          }
+          // Midwife Consultation & Prescription Memo (Dr. Akouavi Mensah)
+          else if (text.includes('Voir la fiche de consultation & conseils de la soignante') ||
+                   text.includes('Accéder aux conseils & ordonnance sage-femme CMS')) {
+            el.onclick = function(e) {
+              e.preventDefault();
+              loadHtmlScreen(SCREENS.EVEIL_MEMO, 2);
+            };
+          }
+          // Fiche CMS Detail (QR Code, Bluetooth, Wi-Fi Direct, SD Card)
+          else if (text.includes('Télécharger / Transférer la fiche (PDF & Bluetooth)') ||
+                   text.includes('Transmettre au CMS par Bluetooth direct') ||
+                   text.includes('Partager avec la sage-femme (Bluetooth CMS)')) {
+            el.onclick = function(e) {
+              e.preventDefault();
+              loadHtmlScreen(SCREENS.SOIGNANTS_CMS, 3);
+            };
+          }
+          // Offline transfers on Fiche CMS Detail
+          else if (text.includes('Transmettre par Bluetooth au soignant CMS')) {
+            el.onclick = function(e) {
+              e.preventDefault();
+              speakText('Recherche de la tablette du soignant au CMS Adidogomé par Bluetooth… Connecté à CMS-Adidogome-Box.');
+            };
+          }
+          else if (text.includes('Partager par Wi-Fi Direct / Local')) {
+            el.onclick = function(e) {
+              e.preventDefault();
+              speakText('Liaison Wi-Fi Direct locale prête. Aucun forfait internet utilisé.');
+            };
+          }
+          else if (text.includes('Enregistrer sur la Carte SD') || text.includes('Sauvegarder une copie sur Carte SD')) {
+            el.onclick = function(e) {
+              e.preventDefault();
+              speakText('Copie de sauvegarde chiffrée enregistrée dans le dossier Sante Togo sur votre carte SD.');
+            };
+          }
+          else if (text.includes('Envoyer cette fiche par SMS direct au médecin')) {
+            el.onclick = function(e) {
+              e.preventDefault();
+              speakText('Fiche rapide d\'Amel K. envoyée par SMS GSM gratuit au médecin régulateur SAMU 118.');
+            };
+          }
+          else if (text.includes('Réécouter la consigne à voix haute')) {
+            el.onclick = function(e) {
+              e.preventDefault();
+              speakText('Respirez calmement. Dites-moi : quel est l\'âge de l\'enfant ? A-t-il de la fièvre ? Sa poitrine se creuse-t-elle quand il respire ?', 0.8);
+            };
+          }
+          else if (text.includes('Écouter en Eʋegbe') || (text.includes('Kabɩyɛ') && el.tagName === 'BUTTON')) {
+            el.addEventListener('click', function() {
+              if (text.includes('Eʋegbe')) {
+                speakText('Wò dɔwɔwɔa dze edzi nyuie le wò kaƒomɔ me ! Amel ƒe lamedodo-gbalẽ le dedie.', 0.85);
+              } else if (text.includes('Kabɩyɛ')) {
+                speakText('CAKɩ Petit Pas yɔɔ. Amel kʊdɔŋ takayaɣ wɛ dedie.', 0.85);
+              }
+            });
+          }
+          // Welcome voice button on Home screen
+          else if (el.id === 'btn-voice-welcome' || aria.includes('message de bienvenue')) {
+            el.onclick = function(e) {
+              e.preventDefault();
+              speakText('Bienvenue sur Petit Pas. Chaque petit pas compte. Outil d\'accompagnement, pas un diagnostic médical. Votre carnet fonctionne cent pour cent hors connexion.');
+            };
+          }
+          // Generic audio speaker buttons without custom handler
+          else if (!el.onclick && (aria.includes('Écouter') || aria.includes('Assistance Vocale'))) {
+            el.addEventListener('click', function() {
+              speakText('Assistance vocale Petit Pas active. Vos données de santé sont protégées sur ce téléphone.');
+            });
+          }
+        });
+
+        // 14. Language pills on Home screen & drawer -> speak greeting in selected language
+        doc.querySelectorAll('#lang-selector-group .lang-pill, #drawer-languages button').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const lang = (btn.dataset.lang || btn.textContent || '').toLowerCase();
+            if (lang.includes('ewe') || lang.includes('eʋegbe')) {
+              speakText('Woezɔ ɖe Petit Pas dzi. Wò dɔwɔwɔa dze edzi nyuie le wò kaƒomɔ me !', 0.85);
+            } else if (lang.includes('kabiye') || lang.includes('kabɩyɛ')) {
+              speakText('CAKɩ Petit Pas yɔɔ. Amel kʊdɔŋ takayaɣ wɛ dedie.', 0.85);
+            } else if (lang.includes('en') || lang.includes('english')) {
+              speakText('Welcome to Petit Pas. Every little step counts. Offline health record ready.', 0.9);
+            } else if (lang.includes('fr')) {
+              speakText('Voix française activée. Bienvenue sur votre carnet bienveillant Petit Pas.', 0.9);
+            }
+          });
+        });
+
+      } catch (e) {}
+    }
+
+    const iframeEl = document.getElementById('rawScreenIframe');
+    iframeEl.addEventListener('load', function() {
+      iframeEl.classList.remove('loading');
+      enhanceIframeDocument(iframeEl);
+    });
   </script>
 </body>
 </html>

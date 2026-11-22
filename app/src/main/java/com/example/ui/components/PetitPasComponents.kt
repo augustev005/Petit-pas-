@@ -120,31 +120,21 @@ fun PetitPasTopBar(
                                 tint = MaterialTheme.colorScheme.onSurface
                             )
                         }
-                    } else {
-                        IconButton(
-                            onClick = onMenuOrLangClick,
-                            modifier = Modifier
-                                .size(48.dp)
-                                .testTag("top_bar_menu_button")
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Menu,
-                                contentDescription = "Menu et Langues",
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        }
+                    }
+                    IconButton(
+                        onClick = onMenuOrLangClick,
+                        modifier = Modifier
+                            .size(48.dp)
+                            .testTag("top_bar_menu_button")
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Menu,
+                            contentDescription = "Menu 3 barres et Langues",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
                     }
 
                     Spacer(modifier = Modifier.width(4.dp))
-                    Image(
-                        painter = painterResource(id = R.drawable.logo_petit_pas_emblem),
-                        contentDescription = "Emblème Petit Pas",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .size(34.dp)
-                            .clip(CircleShape)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
                     Column {
                         Text(
                             text = title,
@@ -441,23 +431,21 @@ fun PetitPasHeroBrandBanner(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            // Official PETIT PAS Brand Illustration Banner (Mother + Baby + Logo + Footprints)
+            // Official PETIT PAS Brand Illustration Banner — displayed freely without circle or border
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(Color(0xFFF8F9FA))
-                    .padding(vertical = 8.dp, horizontal = 8.dp),
+                    .background(Color(0xFFF8F9FA), RoundedCornerShape(12.dp))
+                    .padding(vertical = 10.dp, horizontal = 8.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.logo_petit_pas),
-                    contentDescription = "Logo Petit Pas - Chaque petit pas compte.",
+                    contentDescription = "Logo officiel Petit Pas - Chaque petit pas compte.",
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(176.dp)
-                        .clip(RoundedCornerShape(10.dp))
+                        .height(184.dp)
                         .testTag("hero_logo_petit_pas")
                 )
             }
