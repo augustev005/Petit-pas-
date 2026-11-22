@@ -274,7 +274,7 @@ class PetitPasViewModel(private val repository: PetitPasRepository) : ViewModel(
     ) {
         viewModelScope.launch {
             val current = uiState.value.profile
-            val cleanName = name.trim().ifEmpty { if (isAnonymous) "Parent Anonyme" else "Patricia K." }
+            val cleanName = name.trim().ifEmpty { if (isAnonymous) "Parent Anonyme" else "Augustine A." }
             val cleanPhone = if (isAnonymous) "Mode 100% Anonyme" else phone.trim().ifEmpty { "+228 90 84 42 18" }
             repository.updateProfile(
                 current.copy(

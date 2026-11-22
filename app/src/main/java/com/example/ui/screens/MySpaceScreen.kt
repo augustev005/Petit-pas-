@@ -387,7 +387,7 @@ fun MySpaceScreen(
             }
         }
 
-        // 3. Profil Identity Card (Patricia K. + CMS Adidogomé affiliation)
+        // 3. Profil Identity Card (Augustine A. + CMS Adidogomé affiliation)
         item {
             Card(
                 colors = CardDefaults.cardColors(

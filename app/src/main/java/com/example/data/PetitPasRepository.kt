@@ -17,7 +17,7 @@ class PetitPasRepository(private val dao: PetitPasDao) {
             dao.upsertUserProfile(
                 UserProfileEntity(
                     id = 1,
-                    name = "Patricia K.",
+                    name = "Augustine A.",
                     role = "Parent / Famille",
                     phone = "+228 90 84 42 18",
                     isAnonymous = false,
@@ -28,6 +28,8 @@ class PetitPasRepository(private val dao: PetitPasDao) {
                     isRegistered = true
                 )
             )
+        } else if (currentProfile.name == "Patricia K.") {
+            dao.upsertUserProfile(currentProfile.copy(name = "Augustine A."))
         }
 
         val currentChildren = dao.getAllChildren().firstOrNull().orEmpty()

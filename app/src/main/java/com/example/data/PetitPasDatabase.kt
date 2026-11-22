@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.Flow
 @Entity(tableName = "user_profile")
 data class UserProfileEntity(
     @PrimaryKey val id: Int = 1,
-    val name: String = "Patricia K.",
+    val name: String = "Augustine A.",
     val role: String = "Parent / Famille",
     val phone: String = "+228 90 84 42 18",
     val isAnonymous: Boolean = false,

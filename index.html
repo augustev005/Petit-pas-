@@ -698,8 +698,8 @@
           nameMicBtn.addEventListener('click', () => {
             showToast('🎙️ Écoute vocale en cours…');
             setTimeout(() => {
-              nameInput.value = 'Patricia K. (Maman Amel)';
-              speakText('Nom enregistré par la voix : Patricia K., maman d\'Amel.');
+              nameInput.value = 'Augustine A. (Maman Amel)';
+              speakText('Nom enregistré par la voix : Augustine A., maman d\'Amel.');
             }, 700);
           });
         }
@@ -733,7 +733,7 @@
           else if (text.includes('Valider mon enregistrement')) {
             el.onclick = function(e) {
               e.preventDefault();
-              const enteredName = nameInput?.value?.trim() || 'Patricia K.';
+              const enteredName = nameInput?.value?.trim() || 'Augustine A.';
               localStorage.setItem('petitpas_name', enteredName);
               speakText('Nyasia dze edzi nyuie ! Votre carnet Petit Pas est enregistré en mémoire locale pour ' + enteredName + '.');
               setTimeout(() => loadHtmlScreen(SCREENS.AUDIO_EWE, 3), 500);

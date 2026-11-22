@@ -1169,7 +1169,7 @@ private fun RegistrationSectionCard(
                             )
                             IconButton(
                                 onClick = {
-                                    nameInput = "Maman Amel (Patricia K.)"
+                                    nameInput = "Augustine A. (Maman Amel)"
                                 },
                                 modifier = Modifier
                                     .size(52.dp)
